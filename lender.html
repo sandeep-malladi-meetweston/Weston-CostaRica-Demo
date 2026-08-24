@@ -410,6 +410,39 @@
         return applied;
       }
 
+      /* The display unit, same shape as the language switch just above: a
+         per-viewer preference, not part of the case or the hash, USD is the
+         only currency anything is actually priced or computed in. */
+      var MONEY_UNITS = ["USD", "CRC"];
+      var MONEY_UNIT_STORAGE_KEY = "bfDemoMoneyUnit";
+      var moneyUnit = "USD";
+
+      function loadMoneyUnit() {
+        var store = localeStorage();
+        if (store) {
+          try {
+            var stored = store.getItem(MONEY_UNIT_STORAGE_KEY);
+            if (MONEY_UNITS.indexOf(stored) !== -1) moneyUnit = stored;
+          } catch (error) {
+            /* Falls back to USD below. */
+          }
+        }
+        return moneyUnit;
+      }
+
+      function saveMoneyUnit(next) {
+        moneyUnit = MONEY_UNITS.indexOf(next) !== -1 ? next : "USD";
+        var store = localeStorage();
+        if (store) {
+          try {
+            store.setItem(MONEY_UNIT_STORAGE_KEY, moneyUnit);
+          } catch (error) {
+            /* Private mode: the switch still works for this page. */
+          }
+        }
+        return moneyUnit;
+      }
+
       /* Left-to-right board order, straight from the engine's STAGES. */
       var STAGE_COLUMNS = Object.keys(workspace.STAGES).map(function (name) {
         var id = workspace.STAGES[name];
@@ -2029,12 +2062,12 @@
 
       /* ----------------------------------------------------------- the unit
        *
-       * The demo prices in US dollars only — one currency, one case figure,
-       * one printed amount. There is no toggle to switch on and nothing else
-       * this function needs to know about the view.
+       * Every figure is priced and computed in US dollars — that never
+       * changes. Colones are a display option laid over it at a fixed demo
+       * rate, switched with the pair beside the language toggle.
        */
       function money(usd) {
-        return credit.formatUSD(usd);
+        return moneyUnit === "CRC" ? credit.formatCRC(usd) : credit.formatUSD(usd);
       }
 
       /* The same control, for the other switch on this bar. Both locales are
@@ -2065,16 +2098,45 @@
         );
       }
 
+      /* The currency display switch: USD is what every figure is priced and
+         computed in, colones are a laid-over conversion at a fixed demo
+         rate — this never changes which number is the source of truth. */
+      function renderMoneyToggle(place) {
+        return (
+          '<div class="money-toggle currency-toggle" role="group" aria-label="' +
+          text("lender.money.aria-label") +
+          '" data-money-place="' +
+          escapeHtml(place || "board") +
+          '">' +
+          MONEY_UNITS.map(function (unit) {
+            return (
+              '<button type="button" data-money-unit="' +
+              unit +
+              '" aria-pressed="' +
+              (moneyUnit === unit) +
+              '" title="' +
+              text("lender.money." + unit.toLowerCase() + "-title") +
+              '">' +
+              text("lender.money." + unit.toLowerCase()) +
+              "</button>"
+            );
+          }).join("") +
+          "</div>"
+        );
+      }
+
       /**
-       * The one display switch, in its frame.
-       *
-       * The demo prices in a single currency, so the only thing left to switch
-       * is the language — the border and the cluster shell stay, so the header
-       * reads the same as before, just with one switch inside it rather than
-       * two.
+       * The two display switches, in one frame: which language, and which
+       * currency to lay over the USD figures underneath.
        */
       function renderControlCluster(uiState, place) {
-        return '<div class="control-cluster">' + renderLanguageToggle(place) + "</div>";
+        return (
+          '<div class="control-cluster">' +
+          renderLanguageToggle(place) +
+          '<div class="control-divider" aria-hidden="true"></div>' +
+          renderMoneyToggle(place) +
+          "</div>"
+        );
       }
 
       function stageLabel(stage) {
@@ -5995,6 +6057,7 @@
       function init() {
         /* Whatever the other surface was last read in, before anything prints. */
         loadLocale();
+        loadMoneyUnit();
         applyShellCopy();
         var root = document.getElementById("lender-app");
         var status = document.getElementById("lender-status");
@@ -6275,6 +6338,25 @@
               );
               if (again) again.focus();
               announce("lender.status.language");
+            });
+          });
+          /* Currency. A per-viewer display preference, same as the language
+             switch beside it — it never touches the case or the hash. */
+          root.querySelectorAll("[data-money-unit]").forEach(function (button) {
+            button.addEventListener("click", function () {
+              var next = button.getAttribute("data-money-unit");
+              if (next === moneyUnit) return;
+              var place = button.parentNode
+                ? button.parentNode.getAttribute("data-money-place")
+                : null;
+              rememberScroll();
+              saveMoneyUnit(next);
+              render();
+              var again = root.querySelector(
+                '[data-money-place="' + place + '"] [data-money-unit="' + next + '"]'
+              );
+              if (again) again.focus();
+              announce("lender.status.money-" + next.toLowerCase());
             });
           });
           bindWorkspace(list);

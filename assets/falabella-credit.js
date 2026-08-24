@@ -35,6 +35,12 @@
   /* The mortgage officer's delegated approval authority. */
   var OFFICER_AUTHORITY_USD = 150000;
 
+  /* Every figure is priced and computed in USD; colones are a display option
+     laid over that ground truth, never a second currency the arithmetic
+     runs in. A fixed demo rate, not a live one — the point being shown is
+     "what would this look like in colones", not a real-time feed. */
+  var USD_TO_CRC = 520;
+
   var DEFAULT_NUMBER_LOCALE = "en-US";
 
   /* ============================================================== helpers */
@@ -156,6 +162,15 @@
     );
   }
 
+  /* The same figure, laid over in colones at the fixed demo rate. Whole
+     colones only, for the same reason formatUSD rounds to the dollar. */
+  function formatCRC(usdValue, locale) {
+    return (
+      "₡" +
+      Math.round(fallback(usdValue, 0) * USD_TO_CRC).toLocaleString(numberLocale(locale))
+    );
+  }
+
   /* Takes a percentage, not a ratio: formatPct(24.676) is "24.7%". */
   function formatPct(value, decimals, locale) {
     var places = fallback(decimals, 1);
@@ -195,6 +210,7 @@
     DTI_CAP: DTI_CAP,
     STRESS_BP: STRESS_BP,
     OFFICER_AUTHORITY_USD: OFFICER_AUTHORITY_USD,
+    USD_TO_CRC: USD_TO_CRC,
 
     payment: payment,
     monthlyPaymentUSD: monthlyPaymentUSD,
@@ -206,6 +222,7 @@
 
     numberLocale: numberLocale,
     formatUSD: formatUSD,
+    formatCRC: formatCRC,
     formatPct: formatPct,
     formatDate: formatDate
   };

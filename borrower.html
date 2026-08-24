@@ -194,7 +194,19 @@
     .sim-actions{display:flex;align-items:center;gap:14px;flex-wrap:wrap;margin-top:26px}
     .cta{padding:12px 28px;border:0;border-radius:999px;background:var(--brand);color:#fff;font-size:14.5px;font-weight:600;box-shadow:0 3px 10px rgba(0,122,51,.24);transition:background .16s,transform .16s}
     .cta:hover{background:#00692c;transform:translateY(-1px)}
+    /* A lighter action beside the CTA — "Verify address" asks the page to do
+       something, but it is not the thing the page is for, so it is outlined
+       rather than filled. */
+    button.secondary{padding:11px 20px;border:1.5px solid var(--brand-rule);border-radius:999px;background:#fff;color:var(--brand-deep);font-size:13.5px;font-weight:600;transition:border-color .16s,background .16s}
+    button.secondary:hover{border-color:var(--brand);background:var(--brand-wash)}
+    button.secondary:disabled{border-color:var(--rule);color:var(--muted);cursor:default}
     .sim-actions .footnote{margin:0}
+    /* A confirmation, not a disclaimer: reused for both "address verified" and
+       the intro-call slot confirmation, so it takes the same green pill the
+       rest of the page uses for a settled state rather than the plain grey
+       .footnote it was borrowing. */
+    .footnote.address-verified{display:inline-flex;align-items:center;gap:6px;padding:6px 12px;border-radius:999px;background:var(--brand-wash);color:var(--brand-deep);font-size:12.5px;font-weight:600}
+    .footnote.address-verified::before{content:"✓";display:inline-grid;place-items:center;width:15px;height:15px;border-radius:50%;background:var(--brand);color:#fff;font-size:9px;font-weight:900}
 
     .summary-rail{position:sticky;top:120px;padding:20px;background:var(--paper);border:1px solid var(--rule);border-radius:var(--radius);box-shadow:var(--shadow)}
     .summary-rail h2{margin:0;font:600 17px var(--display);color:var(--brand-deep)}
@@ -557,10 +569,13 @@
       }
 
       /* --------------------------------------------------------- the amount
-         Every figure in this demo is priced and shown in a single currency —
-         US dollars — so there is no unit to toggle and nothing to convert. */
+         Every figure is priced and computed in US dollars; colones are a
+         display option laid over that, at a fixed demo rate — never a
+         second currency the arithmetic runs in. */
       function money(amountUSD) {
-        return credit.formatUSD(amountUSD);
+        return view.moneyUnit === "CRC"
+          ? credit.formatCRC(amountUSD)
+          : credit.formatUSD(amountUSD);
       }
 
       /* ========================================================== escaping */
@@ -839,6 +854,7 @@
 
       var INTRO_CALL_SLOTS = ["tomorrow-morning", "tomorrow-afternoon", "day-after-morning"];
       var SPEEDS = [1, 2, 4];
+      var MONEY_UNITS = ["USD", "CRC"];
 
       var STEP_KINDS = [
         "assistant",
@@ -1116,6 +1132,10 @@
           started: false,
           form: emptyForm(),
           speed: 1,
+          /* USD is the ground truth every figure is computed in; colones are
+             a display option laid over it, never a second currency to price
+             in. See MONEY_UNITS. */
+          moneyUnit: "USD",
           openDocumentId: null,
           drawerTab: "review",
           notificationsOpen: false,
@@ -1150,6 +1170,7 @@
           started: viewState.started === true,
           form: copyForm(viewState.form),
           speed: viewState.speed,
+          moneyUnit: MONEY_UNITS.indexOf(viewState.moneyUnit) !== -1 ? viewState.moneyUnit : "USD",
           openDocumentId: viewState.openDocumentId,
           drawerTab: viewState.drawerTab,
           notificationsOpen: viewState.notificationsOpen === true,
@@ -1625,6 +1646,7 @@
             started: parsed.started === true,
             form: copyForm(parsed.form),
             speed: SPEEDS.indexOf(parsed.speed) !== -1 ? parsed.speed : clean.speed,
+            moneyUnit: MONEY_UNITS.indexOf(parsed.moneyUnit) !== -1 ? parsed.moneyUnit : clean.moneyUnit,
             openDocumentId: typeof parsed.openDocumentId === "string" ? parsed.openDocumentId : null,
             drawerTab: DRAWER_TABS.indexOf(parsed.drawerTab) !== -1 ? parsed.drawerTab : "review",
             notificationsOpen: parsed.notificationsOpen === true,
@@ -2373,6 +2395,24 @@
               text("borrower.control.language-" + locale) +
               '">' +
               escapeHtml(locale.toUpperCase()) +
+              "</button>"
+            );
+          }).join("") +
+          "</div>" +
+          '<div class="control-divider" aria-hidden="true"></div>' +
+          '<div class="switch-pair" role="group" aria-label="' +
+          text("borrower.control.money") +
+          '">' +
+          MONEY_UNITS.map(function (unit) {
+            return (
+              '<button type="button" class="locale-button" data-money-unit="' +
+              unit +
+              '" aria-pressed="' +
+              (viewState.moneyUnit === unit ? "true" : "false") +
+              '" title="' +
+              text("borrower.control.money-" + unit.toLowerCase() + "-title") +
+              '">' +
+              text("borrower.control.money-" + unit.toLowerCase()) +
               "</button>"
             );
           }).join("") +
@@ -4242,6 +4282,12 @@
           applyShellCopy();
           render();
           announce("borrower.status.language");
+          return;
+        }
+        if (control.dataset.moneyUnit) {
+          if (control.dataset.moneyUnit === view.moneyUnit) return;
+          update(fork(view, { moneyUnit: control.dataset.moneyUnit }));
+          announce("borrower.status.money-" + control.dataset.moneyUnit.toLowerCase());
           return;
         }
         if (control.dataset.formField) {
