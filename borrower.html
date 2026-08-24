@@ -161,6 +161,19 @@
     .sim-value.filled{border-bottom-color:#cfe0d5}
     .sim-value:focus-within{border-bottom-color:var(--brand)}
     .sim-value input{flex:1;min-width:0;padding:4px 2px;border:0;border-radius:4px;background:transparent;color:var(--ink);font-size:15.5px;font-weight:600}
+    /* The province select sits in the same underlined row as every typed
+       field, so it is stripped of its platform chrome and given the same
+       custom arrow the demo-controls bar draws for its own select — a
+       native dropdown here would be the one control on the page still
+       wearing the browser's default skin. */
+    .sim-value select{
+      flex:1;min-width:0;padding:4px 26px 4px 2px;border:0;border-radius:4px;background-color:transparent;
+      color:var(--ink);font:600 15.5px inherit;appearance:none;-webkit-appearance:none;cursor:pointer;
+      background-image:linear-gradient(45deg,transparent 50%,var(--brand) 50%),linear-gradient(135deg,var(--brand) 50%,transparent 50%);
+      background-position:calc(100% - 11px) 10px,calc(100% - 6px) 10px;background-size:5px 5px;background-repeat:no-repeat
+    }
+    .sim-value select:hover{color:var(--brand-deep)}
+    .sim-value select option[value=""]{color:var(--muted);font-weight:500}
     .sim-prefix{color:var(--muted);font-size:14px}
     .sim-note{margin-left:auto;padding:3px 9px;border-radius:7px;background:var(--brand-wash);color:var(--brand-deep);font-size:12px;white-space:nowrap}
     .tiles{display:flex;flex-wrap:wrap;gap:10px;list-style:none;margin:0;padding:0}
@@ -4125,6 +4138,18 @@
           return;
         }
         if (action === "play-pause") {
+          /* "Load demo data" already starts the story playing, so this
+             control reads "Pause" from the first frame of the fill — but a
+             click aimed at *starting* the demo, landing while she is still
+             getting her bearings, hits this same control and pauses what it
+             meant to start. FILL_SCRIPT's first few beats (the two property
+             tiles and the first typed field) cover the reaction time that
+             takes; a click during them is read as "start", not "pause". Once
+             she is a few fields in, the story is plainly running and this
+             control goes back to meaning pause. */
+          if (fillRunning() && !view.paused && fillCursor <= 2) {
+            return;
+          }
           stopAutoplay();
           /* Pausing mid-fill stops the hand where it is; playing again from a
              half-filled form finishes it rather than starting over. */

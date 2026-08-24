@@ -2496,13 +2496,6 @@
         return "<div><dt>" + text(labelKey) + "</dt><dd>" + escapeHtml(value) + "</dd></div>";
       }
 
-      /* A row whose label is not (yet) a copy key — the Costa Rican
-         administrative divisions on the property record. Literal English text,
-         used only here, until the copy layer carries a translated key for it. */
-      function rawDetailRow(label, value) {
-        return "<div><dt>" + escapeHtml(label) + "</dt><dd>" + escapeHtml(value) + "</dd></div>";
-      }
-
       function metaRow(labelKey, value, note) {
         return (
           "<p><span>" +
@@ -2930,12 +2923,14 @@
           sectionOpen("lender.application.property-heading") +
           '<dl class="application-record">' +
           detailRow("lender.application.address", data.property.address) +
-          rawDetailRow("Provincia", data.property.province) +
-          rawDetailRow("Cantón", data.property.canton) +
-          rawDetailRow("Distrito", data.property.district) +
-          rawDetailRow(
-            "Address verified",
-            data.property.addressVerified ? "Verified" : "Not verified"
+          detailRow("lender.application.province", data.property.province) +
+          detailRow("lender.application.canton", data.property.canton) +
+          detailRow("lender.application.district", data.property.district) +
+          detailRow(
+            "lender.application.address-verified",
+            data.property.addressVerified
+              ? t("lender.application.address-verified-yes")
+              : t("lender.application.address-verified-no")
           ) +
           detailRow("lender.application.project", data.property.project) +
           detailRow("lender.application.property-type", t("borrower.sim.house")) +
