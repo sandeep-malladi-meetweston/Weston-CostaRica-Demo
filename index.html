@@ -1,0 +1,61 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Banco Falabella — mortgage demo</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Archivo:wght@500;600;700&family=IBM+Plex+Mono:wght@400;500;600&family=Public+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+  <style>
+    :root{
+      --brand:#007a33;--brand-lime:#c3d600;--brand-deep:#154734;--brand-wash:#eff8f2;--brand-rule:#bfe0cc;
+      --ink:#18212b;--slate:#52606d;--muted:#7b8794;--paper:#fff;--shell:#f3f5f7;--rule:#dbe1e7;
+      --display:Archivo,"Segoe UI",Arial,sans-serif;--body:"Public Sans","Segoe UI",Arial,sans-serif;--mono:"IBM Plex Mono",Consolas,monospace;
+      --radius:14px;--shadow:0 1px 2px rgba(21,71,52,.06),0 8px 24px rgba(21,71,52,.07)
+    }
+    *{box-sizing:border-box}
+    body{margin:0;background:var(--shell);color:var(--ink);font:15px/1.6 var(--body)}
+    a{color:inherit}
+    .topbar{min-height:56px;display:flex;align-items:center;gap:15px;padding:9px 20px;background:var(--brand-deep);color:#fff}
+    .portal-label{padding-left:16px;border-left:1px solid rgba(255,255,255,.22);color:#cfe0d7;font-family:var(--display);font-size:12.5px;font-weight:600}
+    .wrap{max-width:820px;margin:0 auto;padding:48px 20px 80px}
+    h1{font-family:var(--display);font-size:28px;font-weight:700;color:var(--brand-deep);margin:0 0 8px}
+    .sub{color:var(--slate);margin:0 0 36px;max-width:560px}
+    .case{display:inline-block;font-family:var(--mono);font-size:12.5px;color:var(--brand);background:var(--brand-wash);border:1px solid var(--brand-rule);border-radius:999px;padding:4px 12px;margin-bottom:20px}
+    .cards{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+    @media (max-width:640px){.cards{grid-template-columns:1fr}}
+    .card{display:block;background:var(--paper);border:1px solid var(--rule);border-radius:var(--radius);box-shadow:var(--shadow);padding:24px;text-decoration:none;transition:transform .12s,box-shadow .12s}
+    .card:hover{transform:translateY(-2px);box-shadow:0 4px 8px rgba(21,71,52,.1),0 16px 32px rgba(21,71,52,.1)}
+    .card:focus-visible{outline:3px solid var(--brand);outline-offset:3px}
+    .card h2{font-family:var(--display);font-size:17px;margin:0 0 6px;color:var(--ink)}
+    .card p{margin:0 0 14px;color:var(--muted);font-size:13.5px}
+    .card .go{font-family:var(--display);font-size:12.5px;font-weight:600;color:var(--brand)}
+    footer{margin-top:40px;color:var(--muted);font-size:12.5px}
+  </style>
+</head>
+<body>
+  <div class="topbar">
+    <span style="font-family:var(--display);font-weight:700;font-size:15px">Banco Falabella</span>
+    <span class="portal-label">Mortgage demo</span>
+  </div>
+  <div class="wrap">
+    <span class="case">Case H-2026-08415</span>
+    <h1>Two surfaces, one mortgage case</h1>
+    <p class="sub">No build step, no server. Start with the borrower view — it plays itself — then switch to the lender view to see the same case from the bank's side.</p>
+    <div class="cards">
+      <a class="card" href="borrower.html">
+        <h2>Borrower view</h2>
+        <p>Javiera's side. Simulation, pre-approval and document collection over WhatsApp — it plays on its own at 4×.</p>
+        <span class="go">Open borrower.html →</span>
+      </a>
+      <a class="card" href="lender.html">
+        <h2>Lender view</h2>
+        <p>Carolina's side. The loan board, notifications and the case workspace drawer. Waits for you.</p>
+        <span class="go">Open lender.html →</span>
+      </a>
+    </div>
+    <footer>See README.md in the repo for the full two-minute walkthrough.</footer>
+  </div>
+</body>
+</html>
