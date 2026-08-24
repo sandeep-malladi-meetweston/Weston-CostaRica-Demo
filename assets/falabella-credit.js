@@ -1,4 +1,4 @@
-/* BancoBCR English portal — the credit arithmetic.
+/* BancoWeston English portal — the credit arithmetic.
  *
  * This file owns every derived number in the demo. Both surfaces call it and
  * neither holds a figure of its own. That is the whole point: one copy of the

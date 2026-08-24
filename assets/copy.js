@@ -1,4 +1,4 @@
-/* BancoBCR English portal — the copy layer.
+/* BancoWeston English portal — the copy layer.
  *
  * Every user-visible string on borrower.html and lender.html resolves through
  * FalabellaCopy.t(). No page markup or render function may hold English text.
@@ -15,7 +15,7 @@
   var COPY = {
     en: {
       /* ============================================================ common */
-      "common.brand-name": "BancoBCR",
+      "common.brand-name": "BancoWeston",
       "common.close": "Close",
       "common.cancel": "Cancel",
       "common.send": "Send",
@@ -155,8 +155,8 @@
 
       /* ============================================================ lender */
       "lender.title": "Lender portal",
-      "lender.page-title": "BancoBCR · Lender portal",
-      "lender.logo-alt": "BancoBCR",
+      "lender.page-title": "BancoWeston · Lender portal",
+      "lender.logo-alt": "BancoWeston",
       "lender.logo-reset-aria": "Clear all filters and show every case",
       "lender.search-label": "Search case, borrower or address",
       "lender.search-placeholder": "Search case, borrower or address",
@@ -525,7 +525,7 @@
       "lender.email.subject":
         "Case {case} · Mortgage at Folio 1,842 No.1,190 (2024) · tax roll 1234-56",
       "lender.email.body":
-        "Dear Inmobiliaria Aconcagua team,\n\nWe are assessing a mortgage application over the property at tax roll 1234-56 of the Aconcagua project in Maipú, case {case}.\n\nThe current title certificate records a mortgage in favour of another bank at Folio 1,842 No.1,190 of 2024, which was not declared in the application. Please confirm whether it corresponds to the construction loan and whether it will be released simultaneously in the same deed, and attach the draft release if so.\n\nKind regards,\n{officer} · {role} · BancoBCR",
+        "Dear Inmobiliaria Aconcagua team,\n\nWe are assessing a mortgage application over the property at tax roll 1234-56 of the Aconcagua project in Maipú, case {case}.\n\nThe current title certificate records a mortgage in favour of another bank at Folio 1,842 No.1,190 of 2024, which was not declared in the application. Please confirm whether it corresponds to the construction loan and whether it will be released simultaneously in the same deed, and attach the draft release if so.\n\nKind regards,\n{officer} · {role} · BancoWeston",
       "lender.email.send": "Send query",
       "lender.email.sent-announcement":
         "Query sent to the developer. Waiting for their reply.",
@@ -729,7 +729,7 @@
       "lender.officer.name": "Carolina Reyes",
       "lender.officer.role": "Mortgage officer, Santiago desk",
       "lender.officer.authority": "$150,000",
-      "lender.team.name": "BancoBCR mortgage team",
+      "lender.team.name": "BancoWeston mortgage team",
 
       /* Announcements */
       "lender.status.board-ready": "Portfolio board ready. {count} cases.",
@@ -791,7 +791,7 @@
 
       /* ========================================================== borrower */
       "borrower.title": "Borrower portal",
-      "borrower.page-title": "BancoBCR · Home loan application",
+      "borrower.page-title": "BancoWeston · Home loan application",
       "borrower.crumb": "Home Loan · Online application",
       "borrower.who": "Borrower",
       "borrower.switch-to-lender": "Switch to lender view",
@@ -1072,14 +1072,14 @@
       "borrower.tag.note": "Note",
 
       /* Chat */
-      "borrower.chat.assistant-name": "BancoBCR mortgage assistant",
+      "borrower.chat.assistant-name": "BancoWeston mortgage assistant",
       "borrower.chat.online": "online · mortgage assistant",
       "borrower.chat.typing": "typing…",
       "borrower.chat.placeholder": "Type a message",
       "borrower.chat.today": "TODAY",
       "borrower.chat.send": "Send",
       "borrower.chat.you": "You",
-      "borrower.chat.team-name": "BancoBCR mortgage team",
+      "borrower.chat.team-name": "BancoWeston mortgage team",
       "borrower.chat.blank": "Type a message before sending it.",
       "borrower.chat.sent": "Message sent. A specialist will pick it up.",
 
@@ -1100,14 +1100,14 @@
       "borrower.assistant.reply-escalated":
         "Your file is with a mortgage specialist and hasn't stopped moving. I've added your message to the case so they see it with everything else. 🙌",
       "borrower.chat.received":
-        "The BancoBCR mortgage team has replied. New messages: {count}.",
+        "The BancoWeston mortgage team has replied. New messages: {count}.",
       "borrower.chat.fab": "Questions on WhatsApp",
       "borrower.notice.escalated-title": "This item is with a specialist",
       "borrower.notice.escalated-body":
         "We flagged the encumbrance on the title certificate and a mortgage specialist is reviewing it with the document. Nothing is expected from you.",
 
       /* Scripted narrative — the assistant thread */
-      "borrower.msg.greeting": "Hi Javiera! 👋 I’m the BancoBCR mortgage assistant. We received your application {case} for {property}.",
+      "borrower.msg.greeting": "Hi Javiera! 👋 I’m the BancoWeston mortgage assistant. We received your application {case} for {property}.",
       "borrower.msg.guide":
         "I’ll guide you here until your file is complete. There are 9 documents; I’ll ask for them one at a time and explain what each is for. You can reply with a photo or a PDF — if something doesn’t match, I’ll tell you right away.",
       "borrower.msg.doc1-request":
@@ -1205,7 +1205,7 @@
      */
     es: {
       /* ============================================================ common */
-      "common.brand-name": "BancoBCR",
+      "common.brand-name": "BancoWeston",
       "common.close": "Cerrar",
       "common.cancel": "Cancelar",
       "common.send": "Enviar",
@@ -1338,8 +1338,8 @@
 
       /* ============================================================ lender */
       "lender.title": "Portal del ejecutivo",
-      "lender.page-title": "BancoBCR · Portal del ejecutivo",
-      "lender.logo-alt": "BancoBCR",
+      "lender.page-title": "BancoWeston · Portal del ejecutivo",
+      "lender.logo-alt": "BancoWeston",
       "lender.logo-reset-aria": "Quitar todos los filtros y mostrar todos los casos",
       "lender.search-label": "Buscar caso, solicitante o dirección",
       "lender.search-placeholder": "Buscar caso, solicitante o dirección",
@@ -1663,7 +1663,7 @@
       "lender.email.subject":
         "Caso {case} · Hipoteca en Fojas 1.842 N° 1.190 (2024) · rol de avalúo 1234-56",
       "lender.email.body":
-        "Estimados señores:\n\nJunto con saludar, informamos que nos encontramos evaluando una solicitud de crédito hipotecario sobre la propiedad del rol de avalúo 1234-56 del proyecto Aconcagua en Maipú, caso {case}.\n\nEl certificado de dominio vigente registra una hipoteca a favor de otro banco en Fojas 1.842 N° 1.190 del año 2024, que no fue declarada en la solicitud. Agradeceremos confirmar si corresponde al crédito constructor y si se alzará simultáneamente en la misma escritura, adjuntando el borrador de alzamiento en tal caso.\n\nAtentamente,\n{officer} · {role} · BancoBCR",
+        "Estimados señores:\n\nJunto con saludar, informamos que nos encontramos evaluando una solicitud de crédito hipotecario sobre la propiedad del rol de avalúo 1234-56 del proyecto Aconcagua en Maipú, caso {case}.\n\nEl certificado de dominio vigente registra una hipoteca a favor de otro banco en Fojas 1.842 N° 1.190 del año 2024, que no fue declarada en la solicitud. Agradeceremos confirmar si corresponde al crédito constructor y si se alzará simultáneamente en la misma escritura, adjuntando el borrador de alzamiento en tal caso.\n\nAtentamente,\n{officer} · {role} · BancoWeston",
       "lender.email.send": "Enviar consulta",
       "lender.email.sent-announcement":
         "Consulta enviada a la inmobiliaria. A la espera de su respuesta.",
@@ -1832,7 +1832,7 @@
       "lender.officer.name": "Carolina Reyes",
       "lender.officer.role": "Ejecutiva hipotecaria, mesa Santiago",
       "lender.officer.authority": "$150.000",
-      "lender.team.name": "Equipo hipotecario BancoBCR",
+      "lender.team.name": "Equipo hipotecario BancoWeston",
 
       "lender.status.board-ready": "Tablero de cartera listo. {count} casos.",
       "lender.status.case-opened": "Caso {case} abierto.",
@@ -1888,7 +1888,7 @@
         "Dentro de la atribución delegada del ejecutivo hipotecario de {authority}.",
       /* ========================================================== borrower */
       "borrower.title": "Portal de la solicitante",
-      "borrower.page-title": "BancoBCR · Solicitud de crédito hipotecario",
+      "borrower.page-title": "BancoWeston · Solicitud de crédito hipotecario",
       "borrower.crumb": "Crédito Hipotecario · Solicitud en línea",
       "borrower.who": "Solicitante",
       "borrower.switch-to-lender": "Ver como ejecutivo",
@@ -2159,14 +2159,14 @@
       "borrower.tag.missing": "Falta dato",
       "borrower.tag.note": "Nota",
 
-      "borrower.chat.assistant-name": "Asistente hipotecario BancoBCR",
+      "borrower.chat.assistant-name": "Asistente hipotecario BancoWeston",
       "borrower.chat.online": "en línea · asistente hipotecario",
       "borrower.chat.typing": "escribiendo…",
       "borrower.chat.placeholder": "Escribe un mensaje",
       "borrower.chat.today": "HOY",
       "borrower.chat.send": "Enviar",
       "borrower.chat.you": "Tú",
-      "borrower.chat.team-name": "Equipo hipotecario BancoBCR",
+      "borrower.chat.team-name": "Equipo hipotecario BancoWeston",
       "borrower.chat.blank": "Escribe un mensaje antes de enviarlo.",
       "borrower.chat.sent": "Mensaje enviado. Un especialista lo tomará.",
 
@@ -2181,14 +2181,14 @@
       "borrower.assistant.reply-escalated":
         "Tu expediente está con un especialista hipotecario y no ha dejado de avanzar. Agregué tu mensaje al caso para que lo vean junto con todo lo demás. 🙌",
       "borrower.chat.received":
-        "El equipo hipotecario de BancoBCR respondió. Mensajes nuevos: {count}.",
+        "El equipo hipotecario de BancoWeston respondió. Mensajes nuevos: {count}.",
       "borrower.chat.fab": "Consultas por WhatsApp",
 
       "borrower.notice.escalated-title": "Este ítem está con un especialista",
       "borrower.notice.escalated-body":
         "Detectamos el gravamen en el certificado de dominio y un especialista hipotecario lo está revisando con el documento. No se espera nada de ti.",
 
-      "borrower.msg.greeting": "¡Hola Javiera! 👋 Soy el asistente hipotecario de BancoBCR. Recibimos tu solicitud {case} para {property}.",
+      "borrower.msg.greeting": "¡Hola Javiera! 👋 Soy el asistente hipotecario de BancoWeston. Recibimos tu solicitud {case} para {property}.",
       "borrower.msg.guide":
         "Te voy a guiar por aquí hasta completar tu expediente. Son 9 documentos; te los voy a pedir uno por uno y te explico para qué sirve cada uno. Puedes responder con una foto o un PDF — si algo no coincide, te aviso de inmediato.",
       "borrower.msg.doc1-request":

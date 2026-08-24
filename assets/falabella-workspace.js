@@ -1,4 +1,4 @@
-/* BancoBCR English portal — the shared case state engine.
+/* BancoWeston English portal — the shared case state engine.
  *
  * One state shape, one set of transitions, both surfaces. The borrower page and
  * the lender page never reach into each other: they hand this module a state and
