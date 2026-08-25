@@ -216,3 +216,4 @@ The Spanish demo at the repository root (`solicitante.html`, `ejecutivo.html`, `
 > **Prototype demo.** Figures, rates, documents and decisions are illustrative and do not constitute
 > a credit offer. There is no decision engine behind this, no document is really read, and nothing
 > leaves the browser. Personal details are demo data.
+
