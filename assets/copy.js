@@ -899,7 +899,7 @@
       "borrower.sim.verify-address": "Verify address",
       "borrower.sim.verify-address-checking": "Verifying…",
       "borrower.sim.address-verified": "Address verified",
-      "borrower.sim.demo-street-address": "200 meters north of the San Pedro church",
+      "borrower.sim.demo-street-address": "Residencial Aconcagua, Casa 12, San Pedro",
       "borrower.sim.demo-canton": "Montes de Oca",
       "borrower.sim.demo-distrito": "San Pedro",
 
@@ -2012,7 +2012,7 @@
       "borrower.sim.verify-address": "Verificar dirección",
       "borrower.sim.verify-address-checking": "Verificando…",
       "borrower.sim.address-verified": "Dirección verificada",
-      "borrower.sim.demo-street-address": "200 metros al norte de la iglesia de San Pedro",
+      "borrower.sim.demo-street-address": "Residencial Aconcagua, Casa 12, San Pedro",
       "borrower.sim.demo-canton": "Montes de Oca",
       "borrower.sim.demo-distrito": "San Pedro",
 
