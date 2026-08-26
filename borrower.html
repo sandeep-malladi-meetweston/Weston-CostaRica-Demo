@@ -853,7 +853,7 @@
       var PHASES = ["simulate", "pre-approval", "intro-call", "documents"];
 
       var INTRO_CALL_SLOTS = ["tomorrow-morning", "tomorrow-afternoon", "day-after-morning"];
-      var SPEEDS = [1, 2, 4];
+      var SPEEDS = [0.5, 0.75, 1, 2, 4];
       var MONEY_UNITS = ["USD", "CRC"];
 
       var STEP_KINDS = [
@@ -1146,6 +1146,8 @@
           addressVerifying: false,
           addressVerified: false,
           introCallSlot: null,
+          introCallCustomDate: "",
+          introCallCustomTime: "",
           state: workspace.normalizeState(
             { version: workspace.STATE_VERSION },
             { submittedAt: SUBMITTED_AT, checklistStartedAt: CHECKLIST_STARTED_AT }
@@ -1179,6 +1181,8 @@
           addressVerifying: viewState.addressVerifying === true,
           addressVerified: viewState.addressVerified === true,
           introCallSlot: viewState.introCallSlot || null,
+          introCallCustomDate: viewState.introCallCustomDate || "",
+          introCallCustomTime: viewState.introCallCustomTime || "",
           state: viewState.state
         };
         if (viewState.currentDocumentId) next.currentDocumentId = viewState.currentDocumentId;
@@ -3473,11 +3477,50 @@
         );
       }
 
+      /* Today's date, used to floor the custom date picker so she can't book
+         the advisor into the past. */
+      function todayIsoDate() {
+        var now = new Date();
+        var month = String(now.getMonth() + 1);
+        var day = String(now.getDate());
+        if (month.length < 2) month = "0" + month;
+        if (day.length < 2) day = "0" + day;
+        return now.getFullYear() + "-" + month + "-" + day;
+      }
+
+      /* "2026-09-03" + "14:30" rendered the way the confirmation line reads
+         everywhere else: a locale-aware date, then the time beside it. */
+      function formatCustomSlot(dateValue, timeValue) {
+        var dateLocale = copy.locale() === "es" ? "es-CR" : "en-US";
+        var parsed = new Date(dateValue + "T" + (timeValue || "00:00"));
+        if (isNaN(parsed.getTime())) return dateValue;
+        var datePart = parsed.toLocaleDateString(dateLocale, {
+          weekday: "long",
+          month: "long",
+          day: "numeric"
+        });
+        if (!timeValue) return datePart;
+        var timePart = parsed.toLocaleTimeString(dateLocale, { hour: "numeric", minute: "2-digit" });
+        return datePart + ", " + timePart;
+      }
+
       /* A loan officer call, scheduled with a click rather than a real
-         calendar integration: three preset slots and a confirmation once one
-         is picked. */
+         calendar integration: three preset slots, plus a "pick your own"
+         option with a real date and time input for whatever works for her. */
       function renderIntroCall(viewState) {
         var slot = viewState.introCallSlot;
+        var customDate = viewState.introCallCustomDate || "";
+        var customTime = viewState.introCallCustomTime || "";
+        var customReady = slot === "custom" && customDate && customTime;
+        var confirmedLabel =
+          slot === "custom"
+            ? customReady
+              ? formatCustomSlot(customDate, customTime)
+              : ""
+            : slot
+              ? t("borrower.intro-call.slot-" + slot)
+              : "";
+        var canContinue = slot && (slot !== "custom" || customReady);
         return (
           '<section class="panel-card" data-panel="intro-call" aria-labelledby="intro-call-title">' +
           '<span class="eyebrow">' +
@@ -3505,15 +3548,40 @@
               "</button>"
             );
           }).join("") +
+          '<button type="button" class="tile' +
+          (slot === "custom" ? " on" : "") +
+          '" data-intro-call-slot="custom" aria-pressed="' +
+          (slot === "custom" ? "true" : "false") +
+          '">' +
+          text("borrower.intro-call.slot-custom") +
+          "</button>" +
           "</div>" +
-          (slot
+          (slot === "custom"
+            ? '<div class="sim-field"><label class="sim-label" for="intro-call-custom-date">' +
+              text("borrower.intro-call.custom-date-label") +
+              '</label><span class="sim-value' +
+              (customDate ? " filled" : "") +
+              '"><input id="intro-call-custom-date" type="date" min="' +
+              todayIsoDate() +
+              '" data-intro-call-date value="' +
+              escapeHtml(customDate) +
+              '"></span></div>' +
+              '<div class="sim-field"><label class="sim-label" for="intro-call-custom-time">' +
+              text("borrower.intro-call.custom-time-label") +
+              '</label><span class="sim-value' +
+              (customTime ? " filled" : "") +
+              '"><input id="intro-call-custom-time" type="time" data-intro-call-time value="' +
+              escapeHtml(customTime) +
+              '"></span></div>'
+            : "") +
+          (confirmedLabel
             ? '<p class="footnote address-verified">' +
-              text("borrower.intro-call.confirmed", { slot: t("borrower.intro-call.slot-" + slot) }) +
+              text("borrower.intro-call.confirmed", { slot: confirmedLabel }) +
               "</p>"
             : "") +
           '<div class="sim-actions">' +
           '<button type="button" class="cta" data-phase="documents"' +
-          (slot ? "" : " disabled") +
+          (canContinue ? "" : " disabled") +
           ">" +
           text("borrower.intro-call.continue") +
           "</button>" +
@@ -4335,7 +4403,16 @@
       /* Every keystroke in the simulator is state: the summary, the affordability
          bar and the source checks beside it recompute from it as she types. */
       function onInput(event) {
-        var field = event.target && event.target.dataset ? event.target.dataset.formInput : null;
+        var target = event.target;
+        if (target && target.dataset && target.dataset.introCallDate !== undefined) {
+          update(fork(view, { introCallCustomDate: target.value }));
+          return;
+        }
+        if (target && target.dataset && target.dataset.introCallTime !== undefined) {
+          update(fork(view, { introCallCustomTime: target.value }));
+          return;
+        }
+        var field = target && target.dataset ? target.dataset.formInput : null;
         if (!field) return;
         /* Typing over the demo's shoulder takes the form back from it. */
         if (fillRunning() && !fillTyping) {

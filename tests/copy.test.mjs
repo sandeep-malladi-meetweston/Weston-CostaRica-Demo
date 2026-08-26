@@ -597,6 +597,8 @@ test("the borrower chrome, phase rail, and demo controls are named", () => {
     "borrower.control.pause",
     "borrower.control.restart",
     "borrower.control.speed",
+    "borrower.control.speed-0.5x",
+    "borrower.control.speed-0.75x",
     "borrower.control.speed-1x",
     "borrower.control.speed-2x",
     "borrower.control.speed-4x",
