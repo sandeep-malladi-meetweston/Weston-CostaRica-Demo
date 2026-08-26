@@ -4240,7 +4240,10 @@
         assistantTyping = false;
         followingThread = true;
         painted = { bubbles: 0, phase: null, verdicts: {}, progress: null, feed: 0 };
-        update(fork(restart(), { started: true, paused: false }));
+        /* restart() re-seeds the case from nothing, speed included — but the
+           speed she picked before pressing the demo button is a page
+           preference, not part of the case, so it survives the re-seed. */
+        update(fork(restart(), { started: true, paused: false, speed: view.speed }));
         queueFill(0, 500);
       }
 
@@ -4318,7 +4321,8 @@
             fork(restart(), {
               form: view.form,
               started: wasStarted,
-              paused: !wasStarted
+              paused: !wasStarted,
+              speed: view.speed
             })
           );
           announce(statusAnnouncementKey());
