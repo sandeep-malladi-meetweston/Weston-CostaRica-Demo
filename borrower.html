@@ -827,14 +827,14 @@
         },
         "income-ratio": function (f) {
           return {
-            income: credit.formatUSD(f.incomeUSD),
-            payment: credit.formatUSD(f.paymentUSD),
+            income: money(f.incomeUSD),
+            payment: money(f.paymentUSD),
             ratio: credit.formatPct(f.dti.ratio * 100),
             cap: credit.formatPct(f.dti.cap * 100)
           };
         },
         "down-payment": function (f) {
-          return { downPayment: credit.formatUSD(f.downPaymentUSD) };
+          return { downPayment: money(f.downPaymentUSD) };
         },
         property: function (f) {
           return { property: money(f.propertyUSD) };
@@ -2504,13 +2504,10 @@
           "</span>" +
           renderDemoControls(viewState) +
           renderNotificationBell(viewState) +
-          /* Names the case in the query, so the desk opens straight on it —
-             the same overview, notifications and snapshot the officer would
-             have been looking at — rather than the bare board every switch
-             used to land on regardless of which case anyone was showing. */
-          '<a class="demo-role-switch" href="lender.html?case=' +
-          encodeURIComponent(CASE_ID) +
-          '" aria-label="' +
+          /* The plain board, per the two-minute path: the officer arrives on
+             the pipeline and clicks into the case herself, rather than
+             skipping straight to a drawer she never opened. */
+          '<a class="demo-role-switch" href="lender.html" aria-label="' +
           text("borrower.switch-to-lender-aria") +
           '">' +
           text("borrower.switch-to-lender") +
@@ -2739,12 +2736,12 @@
           simField("propertyUF", "borrower.sim.property-value", form.propertyUF, {
             prefix: "$",
             numeric: true,
-            note: propertyUF ? credit.formatUSD(f.propertyUSD) : ""
+            note: propertyUF ? money(f.propertyUSD) : ""
           }) +
           simField("downPct", "borrower.sim.down-payment", form.downPct, {
             suffix: "%",
             numeric: true,
-            note: downPct ? credit.formatUSD(f.downPaymentUSD) : ""
+            note: downPct ? money(f.downPaymentUSD) : ""
           }) +
           sectionTitle("borrower.sim.section-details") +
           simField("idNumber", "borrower.sim.id-number", form.idNumber) +
@@ -2752,7 +2749,7 @@
           simField("incomeCLP", "borrower.sim.income", form.incomeCLP, {
             prefix: "$",
             numeric: true,
-            note: statedIncome(form) ? credit.formatUSD(f.incomeUSD) : ""
+            note: statedIncome(form) ? money(f.incomeUSD) : ""
           }) +
           sectionTitle("borrower.sim.section-address") +
           renderAddressFields(form, viewState) +
@@ -2841,24 +2838,24 @@
           '<div class="cap-body">' +
           summaryRow(
             "borrower.sim.simulated-payment",
-            known(hasProperty, credit.formatUSD(f.paymentUSD))
+            known(hasProperty, money(f.paymentUSD))
           ) +
           '<div class="load-bar"><span class="load-bar-fill' +
           (priced && f.dti.overCap ? " over-cap" : "") +
           '" style="width:' +
           (priced ? fill.toFixed(1) : "0") +
           '%"></span></div>' +
-          summaryRow("borrower.sim.stated-income", known(hasIncome, credit.formatUSD(f.incomeUSD))) +
+          summaryRow("borrower.sim.stated-income", known(hasIncome, money(f.incomeUSD))) +
           summaryRow(
             "borrower.sim.max-payment",
-            known(hasIncome, credit.formatUSD(f.incomeUSD * f.dti.cap)),
+            known(hasIncome, money(f.incomeUSD * f.dti.cap)),
             { cap: credit.formatPct(capPct) }
           ) +
           summaryRow(
             "borrower.check.affordability.label",
             known(priced, credit.formatPct(ratioPct))
           ) +
-          summaryRow("borrower.sim.headroom", known(priced, credit.formatUSD(f.dti.headroomUSD))) +
+          summaryRow("borrower.sim.headroom", known(priced, money(f.dti.headroomUSD))) +
           "</div></div>" +
           "</aside>"
         );
@@ -2930,13 +2927,13 @@
           '<div class="result-column chosen"><span class="eyebrow">' +
           text("borrower.result.financing") +
           '</span><span class="result-amount">' +
-          escapeHtml(credit.formatUSD(f.paymentUSD)) +
+          escapeHtml(money(f.paymentUSD)) +
           "</span>" +
           figureRow("borrower.result.loan", money(f.loanUSD)) +
           figureRow("borrower.result.rate", credit.formatPct(f.annualRate * 100, 2)) +
           figureRow(
             "borrower.result.down-payment",
-            t("borrower.result.with-financing", { amount: credit.formatUSD(f.downPaymentUSD) })
+            t("borrower.result.with-financing", { amount: money(f.downPaymentUSD) })
           ) +
           figureRow(
             "borrower.sim.term",

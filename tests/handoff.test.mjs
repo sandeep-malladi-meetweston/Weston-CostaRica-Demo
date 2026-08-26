@@ -1160,29 +1160,15 @@ test("no restart has ever happened is not mistaken for one", () => {
 
 /* ========================================================= the role switches */
 
-test("the borrower's topbar links straight into her case on the lender's desk", () => {
+test("the borrower's topbar links to the lender's board, not straight into her case", () => {
   const markup = borrower.renderTopbar(borrower.initialViewState());
-  /* Named in the query, so the desk opens on this case's overview rather than
-     the bare board — the same case whichever tab last had it open. */
-  assert.ok(markup.includes('href="lender.html?case=' + borrower.CASE_ID + '"'));
+  /* Per the two-minute path: the officer lands on the pipeline and clicks
+     into the case herself, rather than skipping to a drawer she never
+     opened. */
+  assert.ok(markup.includes('href="lender.html"'));
   assert.ok(markup.includes(borrower.escapeHtml(t("borrower.switch-to-lender"))));
   assert.match(markup, /<a[^>]*class="demo-role-switch"/);
   assert.ok(markup.includes('aria-label="' + borrower.escapeHtml(t("borrower.switch-to-lender-aria")) + '"'));
-});
-
-test("the borrower's link round-trips: the lender opens exactly the case it names, quietly", () => {
-  const markup = borrower.renderTopbar(borrower.initialViewState());
-  const href = markup.match(/href="lender\.html\?case=([^"]+)"/)[1];
-  const known = new Set(plain(lender.buildPortfolio(lender.FALLBACK_CASE, null)).map(loan => loan.caseId));
-  const opened = lender.applyCaseQuery(lender.DEFAULT_VIEW_STATE, "?case=" + href, known);
-  assert.equal(plain(opened.viewState).selectedCaseId, borrower.CASE_ID);
-  assert.equal(plain(opened.viewState).activeTab, "overview");
-  /* Quiet every time: repeating "now assigned to you" on every back-and-forth
-     during a demo would be wrong the second time it was said. */
-  assert.deepEqual(plain(opened.announcement), {
-    key: "lender.status.case-opened",
-    params: { case: borrower.CASE_ID }
-  });
 });
 
 test("the lender's topbar links back to the borrower view", () => {

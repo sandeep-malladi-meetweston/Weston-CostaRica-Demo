@@ -3020,7 +3020,7 @@
           detailRow("lender.application.name", data.borrower.fullName) +
           detailRow("lender.application.id-number", data.borrower.idNumber) +
           detailRow("lender.application.date-of-birth", credit.formatDate(data.borrower.dateOfBirth)) +
-          detailRow("lender.application.income", credit.formatUSD(figures.incomeUSD)) +
+          detailRow("lender.application.income", money(figures.incomeUSD)) +
           detailRow("lender.application.phone", data.borrower.phone) +
           detailRow("lender.application.email", data.borrower.email) +
           detailRow("lender.application.submitted", formatTimestamp(data.submittedAt)) +
@@ -3705,7 +3705,7 @@
           metaRow("risk.summary-term", figures.termYears + " " + t("borrower.sim.years")) +
           metaRow("risk.summary-rate", credit.formatPct(figures.annualRate * 100)) +
           metaRow("risk.summary-payment", money(figures.paymentUSD)) +
-          metaRow("risk.summary-income", credit.formatUSD(figures.incomeUSD)) +
+          metaRow("risk.summary-income", money(figures.incomeUSD)) +
           "</div></section>" +
 
           sectionOpen("risk.pti-heading") +
@@ -3721,9 +3721,9 @@
             : '<span aria-hidden="true">✓</span> ' + text("risk.pti-under-cap")) +
           '</strong></p><p class="risk-note">' +
           text("risk.pti-explainer", {
-            payment: credit.formatUSD(figures.dti.paymentUSD),
+            payment: money(figures.dti.paymentUSD),
             ratio: ratio,
-            income: credit.formatUSD(figures.incomeUSD),
+            income: money(figures.incomeUSD),
             cap: cap
           }) +
           "</p></section>" +
@@ -3740,7 +3740,7 @@
           text("risk.stress-over-cap", { cap: cap }) +
           '</strong></p><p class="risk-note">' +
           text("risk.stress-explainer", {
-            payment: credit.formatUSD(figures.stressedDti.paymentUSD),
+            payment: money(figures.stressedDti.paymentUSD),
             ratio: stressed,
             cap: cap
           }) +
@@ -4887,8 +4887,8 @@
           return {
             intent: intent,
             text: t("lender.assistant.answer-affordability", {
-              payment: credit.formatUSD(figures.dti.paymentUSD),
-              income: credit.formatUSD(figures.incomeUSD),
+              payment: money(figures.dti.paymentUSD),
+              income: money(figures.incomeUSD),
               ratio: credit.formatPct(figures.dti.ratio * 100),
               cap: credit.formatPct(figures.dti.cap * 100),
               stressed: credit.formatPct(figures.stressedDti.ratio * 100)
