@@ -58,6 +58,7 @@ test("SCRIPT is data: a flat array of steps, every one of a known kind", () => {
     "document",
     "verify",
     "status",
+    "select-intro-slot",
     "escalate",
     "end"
   ]);

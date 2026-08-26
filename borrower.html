@@ -862,6 +862,7 @@
         "document",
         "verify",
         "status",
+        "select-intro-slot",
         "escalate",
         "end"
       ];
@@ -894,9 +895,14 @@
 
         /* ---- phase 2b: scheduling the loan officer call ---- */
         { kind: "status", delay: 1200, phase: "intro-call", statusKey: "borrower.portal.status-documents" },
+        /* Picked with its own beat, separate from the phase change that
+           follows, so the chosen tile is on screen — highlighted, not just
+           set — for a moment even at 4x, instead of the phase moving on
+           before anyone could see what was picked. */
+        { kind: "select-intro-slot", delay: 900, slot: "tomorrow-morning" },
 
         /* ---- phase 3: the nine documents, over WhatsApp ---- */
-        { kind: "status", delay: 1400, phase: "documents", statusKey: "borrower.portal.status-documents" },
+        { kind: "status", delay: 700, phase: "documents", statusKey: "borrower.portal.status-documents" },
         { kind: "assistant", delay: 600, key: "borrower.msg.greeting", paramsId: "case-property" },
         { kind: "assistant", delay: 900, key: "borrower.msg.guide" },
 
@@ -1296,6 +1302,11 @@
           if (viewState.verified.indexOf(step.checkId) === -1) {
             changes.verified = viewState.verified.concat([step.checkId]);
           }
+          return fork(viewState, changes);
+        }
+
+        if (step.kind === "select-intro-slot") {
+          changes.introCallSlot = step.slot;
           return fork(viewState, changes);
         }
 
