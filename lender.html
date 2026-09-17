@@ -365,7 +365,7 @@
       /* No locale argument: the copy layer holds the one that is switched on,
          and falabella-credit.js reads the same one for its numbers and dates.
          One switch therefore moves every string *and* every figure — a Spanish
-         page printing "$3,150" with an English thousands separator would be
+         page printing "UF 3,150" with an English thousands separator would be
          worse than an English one. */
       function t(key, params) {
         return copy.t(key, undefined, params);
@@ -411,11 +411,11 @@
       }
 
       /* The display unit, same shape as the language switch just above: a
-         per-viewer preference, not part of the case or the hash, USD is the
-         only currency anything is actually priced or computed in. */
-      var MONEY_UNITS = ["USD", "CRC"];
+         per-viewer preference, not part of the case or the hash, UF is the
+         only unit anything is actually priced or computed in. */
+      var MONEY_UNITS = ["UF", "CLP"];
       var MONEY_UNIT_STORAGE_KEY = "bfDemoMoneyUnit";
-      var moneyUnit = "USD";
+      var moneyUnit = "UF";
 
       function loadMoneyUnit() {
         var store = localeStorage();
@@ -424,14 +424,14 @@
             var stored = store.getItem(MONEY_UNIT_STORAGE_KEY);
             if (MONEY_UNITS.indexOf(stored) !== -1) moneyUnit = stored;
           } catch (error) {
-            /* Falls back to USD below. */
+            /* Falls back to UF below. */
           }
         }
         return moneyUnit;
       }
 
       function saveMoneyUnit(next) {
-        moneyUnit = MONEY_UNITS.indexOf(next) !== -1 ? next : "USD";
+        moneyUnit = MONEY_UNITS.indexOf(next) !== -1 ? next : "UF";
         var store = localeStorage();
         if (store) {
           try {
@@ -472,29 +472,29 @@
         submittedAt: "2026-08-05T13:40:00.000Z",
         checklistStartedAt: "2026-08-05T13:45:00.000Z",
         property: {
-          address: "Residencial Aconcagua, Casa 12, San Pedro",
+          address: "Camino Rinconada 2450, Casa 12, Maipú",
           project: "Aconcagua",
-          commune: "Montes de Oca",
-          province: "San José",
-          canton: "Montes de Oca",
-          district: "San Pedro",
+          commune: "Maipú",
+          region: "Región Metropolitana",
+          comuna: "Maipú",
+          ciudad: "Santiago",
           addressVerified: true,
           taxRoll: "1234-56",
           conditionKey: "borrower.portal.property",
-          valueUSD: credit.PROPERTY_USD,
+          valueUF: credit.PROPERTY_UF,
           developer: "Inmobiliaria Aconcagua S.A."
         },
         borrower: {
           fullName: "Javiera Soto Miranda",
-          idNumber: "1-0234-0567",
+          idNumber: "18.452.309-4",
           dateOfBirth: "1993-04-12",
-          incomeUSD: credit.INCOME_USD,
-          phone: "+506 8765 4321",
-          email: "javiera.soto@example.cr"
+          incomeCLP: credit.INCOME_CLP,
+          phone: "+56 9 8765 4321",
+          email: "javiera.soto@example.cl"
         },
         loan: {
-          requestedUSD: credit.loanFor(credit.PROPERTY_USD, credit.LTV),
-          downPaymentUSD: credit.downPaymentUSD(credit.PROPERTY_USD, credit.DOWN_PCT),
+          requestedUF: credit.loanFor(credit.PROPERTY_UF, credit.LTV),
+          downPaymentUF: credit.downPaymentUF(credit.PROPERTY_UF, credit.DOWN_PCT),
           termYears: credit.TERM_YEARS,
           annualRate: credit.RATE,
           ltv: credit.LTV,
@@ -503,7 +503,7 @@
         officer: {
           name: t("lender.officer.name"),
           role: t("lender.officer.role"),
-          authorityUSD: credit.OFFICER_AUTHORITY_USD
+          authorityUF: credit.OFFICER_AUTHORITY_UF
         },
         state: null
       };
@@ -513,8 +513,8 @@
          second application record, its own storage key and its own opening
          state — Ignacio's file rather than a copy of Javiera's. */
       var SECOND_CASE_ID = "H-2026-08377";
-      var SECOND_CASE_REQUESTED_USD = 108000;
-      var SECOND_CASE_PROPERTY_USD = SECOND_CASE_REQUESTED_USD / credit.LTV;
+      var SECOND_CASE_REQUESTED_UF = 2700;
+      var SECOND_CASE_PROPERTY_UF = SECOND_CASE_REQUESTED_UF / credit.LTV;
 
       var SECOND_CASE = {
         caseId: SECOND_CASE_ID,
@@ -522,29 +522,29 @@
         submittedAt: "2026-07-22T11:00:00.000Z",
         checklistStartedAt: "2026-07-22T11:05:00.000Z",
         property: {
-          address: "Residencial Vicuña, Curridabat",
-          project: "Residencial Vicuña",
-          commune: "Curridabat",
-          province: "San José",
-          canton: "Curridabat",
-          district: "Sánchez",
+          address: "Avenida Vicuña Mackenna 5620, La Florida",
+          project: "Vicuña Mackenna",
+          commune: "La Florida",
+          region: "Región Metropolitana",
+          comuna: "La Florida",
+          ciudad: "Santiago",
           addressVerified: true,
           taxRoll: "2210-14",
           conditionKey: "borrower.portal.property",
-          valueUSD: SECOND_CASE_PROPERTY_USD,
+          valueUF: SECOND_CASE_PROPERTY_UF,
           developer: "Inmobiliaria Andes Sur S.A."
         },
         borrower: {
           fullName: "Ignacio Bravo Lagos",
-          idNumber: "1-0178-0842",
+          idNumber: "17.884.221-6",
           dateOfBirth: "1987-11-03",
-          incomeUSD: credit.INCOME_USD,
-          phone: "+506 7654 3210",
-          email: "ignacio.bravo@example.cr"
+          incomeCLP: credit.INCOME_CLP,
+          phone: "+56 9 7654 3210",
+          email: "ignacio.bravo@example.cl"
         },
         loan: {
-          requestedUSD: SECOND_CASE_REQUESTED_USD,
-          downPaymentUSD: credit.downPaymentUSD(SECOND_CASE_PROPERTY_USD, credit.DOWN_PCT),
+          requestedUF: SECOND_CASE_REQUESTED_UF,
+          downPaymentUF: credit.downPaymentUF(SECOND_CASE_PROPERTY_UF, credit.DOWN_PCT),
           termYears: credit.TERM_YEARS,
           annualRate: credit.RATE,
           ltv: credit.LTV,
@@ -553,7 +553,7 @@
         officer: {
           name: t("lender.officer.name"),
           role: t("lender.officer.role"),
-          authorityUSD: credit.OFFICER_AUTHORITY_USD
+          authorityUF: credit.OFFICER_AUTHORITY_UF
         },
         state: null
       };
@@ -1056,8 +1056,8 @@
         fixtureLoan({
           caseId: "H-2026-08431",
           borrowerName: "Tomás Herrera Ruiz",
-          address: "Calle Rinconada 245, Alajuela",
-          requestedUF: 104000,
+          address: "Camino Rinconada 2450, Maipú",
+          requestedUF: 2600,
           deedDate: "2026-10-02",
           substatusKey: "lender.substatus.submitted-today",
           workflow: { submittedAt: "2026-08-06T09:10:00.000Z" }
@@ -1065,8 +1065,8 @@
         fixtureLoan({
           caseId: "H-2026-08428",
           borrowerName: "Consuelo Rojas Pinto",
-          address: "Avenida Central 918, Heredia",
-          requestedUF: 164000,
+          address: "Avenida Portales 918, Estación Central",
+          requestedUF: 4100,
           deedDate: "2026-10-09",
           substatusKey: "lender.substatus.application-received",
           workflow: { submittedAt: "2026-08-05T15:30:00.000Z" }
@@ -1074,8 +1074,8 @@
         fixtureLoan({
           caseId: "H-2026-08402",
           borrowerName: "Rodrigo Peña Vidal",
-          address: "Los Robles 340, Cartago",
-          requestedUF: 116000,
+          address: "Los Nogales 340, Puente Alto",
+          requestedUF: 2900,
           deedDate: "2026-09-30",
           substatusKey: "lender.substatus.documents-progress",
           substatusParams: { received: 8, total: workspace.DOCUMENT_IDS.length },
@@ -1088,8 +1088,8 @@
         fixtureLoan({
           caseId: "H-2026-08391",
           borrowerName: "Marcela Ortiz Fuentes",
-          address: "Pasaje El Roble 77, Desamparados",
-          requestedUF: 184000,
+          address: "Pasaje El Roble 77, La Florida",
+          requestedUF: 4600,
           deedDate: "2026-09-22",
           substatusKey: "lender.substatus.new-upload",
           documents: firstAccepted(6, { "purchase-promise": "under-review" }),
@@ -1104,8 +1104,8 @@
         fixtureLoan({
           caseId: "H-2026-08377",
           borrowerName: "Ignacio Bravo Lagos",
-          address: "Residencial Vicuña, Curridabat",
-          requestedUF: 108000,
+          address: "Avenida Vicuña Mackenna 5620, La Florida",
+          requestedUF: 2700,
           deedDate: "2026-09-12",
           substatusKey: "lender.substatus.appraisal-below-request",
           documents: allAccepted(),
@@ -1122,8 +1122,8 @@
         fixtureLoan({
           caseId: "H-2026-08360",
           borrowerName: "Paulina Vera Cortés",
-          address: "Calle Nueva Uno 145, Moravia",
-          requestedUF: 208000,
+          address: "Calle Nueva Uno 145, Ñuñoa",
+          requestedUF: 5200,
           deedDate: "2026-09-08",
           substatusKey: "lender.substatus.credit-review",
           documents: allAccepted(),
@@ -1137,8 +1137,8 @@
         fixtureLoan({
           caseId: "H-2026-08344",
           borrowerName: "Esteban Cáceres Mella",
-          address: "Los Cerezos 288, Goicoechea",
-          requestedUF: 98000,
+          address: "Los Cerezos 288, Quilicura",
+          requestedUF: 2450,
           deedDate: "2026-08-14",
           substatusKey: "lender.substatus.deed-in-days",
           substatusParams: { days: daysUntilDeed("2026-08-14", DEMO_NOW) },
@@ -1155,8 +1155,8 @@
         fixtureLoan({
           caseId: "H-2026-08321",
           borrowerName: "Antonia Silva Naranjo",
-          address: "Avenida Escazú 314, Santa Ana",
-          requestedUF: 152000,
+          address: "Avenida Colón 3140, Las Condes",
+          requestedUF: 3800,
           deedDate: "2026-08-19",
           /* Signed at the notary, waiting on the closing: the one fixture that
              fills the column between Approved and Closed. */
@@ -1174,8 +1174,8 @@
         fixtureLoan({
           caseId: "H-2026-08290",
           borrowerName: "Matías Fuentes Reyes",
-          address: "El Peumo 512, Tibás",
-          requestedUF: 174000,
+          address: "El Peumo 512, Peñalolén",
+          requestedUF: 4350,
           deedDate: null,
           substatusKey: "lender.substatus.disbursed-on",
           substatusParams: { date: credit.formatDate("2026-07-24") },
@@ -1190,8 +1190,8 @@
         fixtureLoan({
           caseId: "H-2026-08255",
           borrowerName: "Camila Duarte Solís",
-          address: "Santa Rosa 845, Guadalupe",
-          requestedUF: 110000,
+          address: "Santa Rosa 8455, La Granja",
+          requestedUF: 2750,
           deedDate: null,
           substatusKey: "lender.substatus.performing",
           documents: allAccepted(),
@@ -1205,8 +1205,8 @@
         fixtureLoan({
           caseId: "H-2026-08102",
           borrowerName: "Felipe Navarro Bustos",
-          address: "Avenida Central 129, San José",
-          requestedUF: 132000,
+          address: "Avenida Matta 1290, Santiago",
+          requestedUF: 3300,
           deedDate: null,
           substatusKey: "lender.substatus.paid-off-on",
           substatusParams: { date: credit.formatDate("2026-06-30") },
@@ -1727,7 +1727,7 @@
           caseId: data.caseId,
           borrowerName: data.borrower.fullName,
           address: data.property.address,
-          requestedUF: data.loan.requestedUSD,
+          requestedUF: data.loan.requestedUF,
           deedDate: data.loan.deedTargetDate,
           substatusKey: "lender.substatus.documents-progress",
           substatusParams: documentsProgress(liveState),
@@ -2062,12 +2062,14 @@
 
       /* ----------------------------------------------------------- the unit
        *
-       * Every figure is priced and computed in US dollars — that never
-       * changes. Colones are a display option laid over it at a fixed demo
-       * rate, switched with the pair beside the language toggle.
+       * Every figure is priced and computed in UF, the unit of account a
+       * Chilean mortgage is written in — that never changes. Pesos are a
+       * display option laid over it at the published UF, switched with the
+       * pair beside the language toggle.
        */
-      function money(usd) {
-        return moneyUnit === "CRC" ? credit.formatCRC(usd) : credit.formatUSD(usd);
+      function money(uf, decimals) {
+        if (moneyUnit === "CLP") return credit.formatCLP(credit.toCLP(uf));
+        return credit.formatUF(uf, decimals);
       }
 
       /* The same control, for the other switch on this bar. Both locales are
@@ -2098,9 +2100,9 @@
         );
       }
 
-      /* The currency display switch: USD is what every figure is priced and
-         computed in, colones are a laid-over conversion at a fixed demo
-         rate — this never changes which number is the source of truth. */
+      /* The unit display switch: UF is what every figure is priced and
+         computed in, pesos are a laid-over conversion at the published UF —
+         this never changes which number is the source of truth. */
       function renderMoneyToggle(place) {
         return (
           '<div class="money-toggle currency-toggle" role="group" aria-label="' +
@@ -2127,7 +2129,7 @@
 
       /**
        * The two display switches, in one frame: which language, and which
-       * currency to lay over the USD figures underneath.
+       * unit to lay over the UF figures underneath.
        */
       function renderControlCluster(uiState, place) {
         return (
@@ -2540,11 +2542,11 @@
         if (!loan || !loan.caseData) return null;
         var data = loan.caseData;
         return credit.caseFigures({
-          propertyUSD: data.property.valueUSD,
+          propertyUF: data.property.valueUF,
           ltv: data.loan.ltv,
           annualRate: data.loan.annualRate,
           years: data.loan.termYears,
-          incomeUSD: data.borrower.incomeUSD
+          incomeCLP: data.borrower.incomeCLP
         });
       }
 
@@ -2985,9 +2987,9 @@
           sectionOpen("lender.application.property-heading") +
           '<dl class="application-record">' +
           detailRow("lender.application.address", data.property.address) +
-          detailRow("lender.application.province", data.property.province) +
-          detailRow("lender.application.canton", data.property.canton) +
-          detailRow("lender.application.district", data.property.district) +
+          detailRow("lender.application.region", data.property.region) +
+          detailRow("lender.application.comuna", data.property.comuna) +
+          detailRow("lender.application.ciudad", data.property.ciudad) +
           detailRow(
             "lender.application.address-verified",
             data.property.addressVerified
@@ -2997,13 +2999,13 @@
           detailRow("lender.application.project", data.property.project) +
           detailRow("lender.application.property-type", t("borrower.sim.house")) +
           detailRow("lender.application.property-condition", t("borrower.sim.condition-new")) +
-          detailRow("lender.application.property-value", money(figures.propertyUSD)) +
+          detailRow("lender.application.property-value", money(figures.propertyUF)) +
           detailRow("lender.application.tax-roll", data.property.taxRoll) +
           "</dl></section>" +
           sectionOpen("lender.application.loan-heading") +
           '<dl class="application-record">' +
-          detailRow("lender.application.loan-amount", money(figures.loanUSD)) +
-          detailRow("lender.application.down-payment", money(figures.downPaymentUSD)) +
+          detailRow("lender.application.loan-amount", money(figures.loanUF)) +
+          detailRow("lender.application.down-payment", money(figures.downPaymentUF)) +
           detailRow(
             "lender.application.term",
             figures.termYears + " " + t("borrower.sim.years")
@@ -3020,7 +3022,7 @@
           detailRow("lender.application.name", data.borrower.fullName) +
           detailRow("lender.application.id-number", data.borrower.idNumber) +
           detailRow("lender.application.date-of-birth", credit.formatDate(data.borrower.dateOfBirth)) +
-          detailRow("lender.application.income", money(figures.incomeUSD)) +
+          detailRow("lender.application.income", credit.formatCLP(figures.incomeCLP)) +
           detailRow("lender.application.phone", data.borrower.phone) +
           detailRow("lender.application.email", data.borrower.email) +
           detailRow("lender.application.submitted", formatTimestamp(data.submittedAt)) +
@@ -3699,13 +3701,13 @@
         return (
           sectionOpen("risk.summary-heading") +
           '<div class="record-card">' +
-          metaRow("risk.summary-loan", money(figures.loanUSD)) +
-          metaRow("risk.summary-property", money(figures.propertyUSD)) +
-          metaRow("risk.summary-down-payment", money(figures.downPaymentUSD)) +
+          metaRow("risk.summary-loan", money(figures.loanUF)) +
+          metaRow("risk.summary-property", money(figures.propertyUF)) +
+          metaRow("risk.summary-down-payment", money(figures.downPaymentUF)) +
           metaRow("risk.summary-term", figures.termYears + " " + t("borrower.sim.years")) +
           metaRow("risk.summary-rate", credit.formatPct(figures.annualRate * 100)) +
-          metaRow("risk.summary-payment", money(figures.paymentUSD)) +
-          metaRow("risk.summary-income", money(figures.incomeUSD)) +
+          metaRow("risk.summary-payment", money(figures.paymentUF, 2)) +
+          metaRow("risk.summary-income", credit.formatCLP(figures.incomeCLP)) +
           "</div></section>" +
 
           sectionOpen("risk.pti-heading") +
@@ -3721,9 +3723,9 @@
             : '<span aria-hidden="true">✓</span> ' + text("risk.pti-under-cap")) +
           '</strong></p><p class="risk-note">' +
           text("risk.pti-explainer", {
-            payment: money(figures.dti.paymentUSD),
+            payment: credit.formatCLP(figures.dti.paymentCLP),
             ratio: ratio,
-            income: money(figures.incomeUSD),
+            income: credit.formatCLP(figures.incomeCLP),
             cap: cap
           }) +
           "</p></section>" +
@@ -3740,7 +3742,7 @@
           text("risk.stress-over-cap", { cap: cap }) +
           '</strong></p><p class="risk-note">' +
           text("risk.stress-explainer", {
-            payment: money(figures.stressedDti.paymentUSD),
+            payment: credit.formatCLP(figures.stressedDti.paymentCLP),
             ratio: stressed,
             cap: cap
           }) +
@@ -3753,8 +3755,8 @@
       }
 
       /* The policy cap that is stated but not carried as a FalabellaCredit
-         constant: new homes up to $150,000 (see risk.policy.property-cap). */
-      var POLICY_PROPERTY_CAP_USD = 150000;
+         constant: new homes up to UF 4,000 (see risk.policy.property-cap). */
+      var POLICY_PROPERTY_CAP_UF = 4000;
 
       /* The policy, point by point. The three rules that are arithmetic are
          checked here, against the case's own figures; tenure, contributions,
@@ -3773,7 +3775,7 @@
         return {
           "payment-to-income": !figures.dti.overCap,
           financing: figures.ltv <= credit.LTV + 1e-9,
-          "property-cap": figures.propertyUSD <= POLICY_PROPERTY_CAP_USD
+          "property-cap": figures.propertyUF <= POLICY_PROPERTY_CAP_UF
         };
       }
 
@@ -4887,8 +4889,8 @@
           return {
             intent: intent,
             text: t("lender.assistant.answer-affordability", {
-              payment: money(figures.dti.paymentUSD),
-              income: money(figures.incomeUSD),
+              payment: credit.formatCLP(figures.dti.paymentCLP),
+              income: credit.formatCLP(figures.incomeCLP),
               ratio: credit.formatPct(figures.dti.ratio * 100),
               cap: credit.formatPct(figures.dti.cap * 100),
               stressed: credit.formatPct(figures.stressedDti.ratio * 100)

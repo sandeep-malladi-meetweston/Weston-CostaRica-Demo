@@ -569,13 +569,13 @@
       }
 
       /* --------------------------------------------------------- the amount
-         Every figure is priced and computed in US dollars; colones are a
-         display option laid over that, at a fixed demo rate — never a
-         second currency the arithmetic runs in. */
-      function money(amountUSD) {
-        return view.moneyUnit === "CRC"
-          ? credit.formatCRC(amountUSD)
-          : credit.formatUSD(amountUSD);
+         The loan is written in UF, the unit of account a Chilean mortgage is
+         priced in; pesos are a display option laid over that, at the published
+         UF — never a second unit the arithmetic runs in. */
+      function money(amountUF, decimals) {
+        return view.moneyUnit === "CLP"
+          ? credit.formatCLP(credit.toCLP(amountUF))
+          : credit.formatUF(amountUF, decimals);
       }
 
       /* ========================================================== escaping */
@@ -628,9 +628,9 @@
         dateOfBirth: "",
         incomeCLP: "",
         streetAddress: "",
-        provincia: "",
-        canton: "",
-        distrito: ""
+        region: "",
+        comuna: "",
+        ciudad: ""
       };
 
       var FORM_FIELDS = Object.keys(EMPTY_FORM);
@@ -646,9 +646,9 @@
           dateOfBirth: "",
           incomeCLP: "",
           streetAddress: "",
-          provincia: "",
-          canton: "",
-          distrito: ""
+          region: "",
+          comuna: "",
+          ciudad: ""
         };
       }
 
@@ -658,16 +658,16 @@
         return {
           propertyType: "house",
           condition: "new",
-          propertyUF: String(credit.PROPERTY_USD),
+          propertyUF: String(credit.PROPERTY_UF),
           downPct: String(Math.round(credit.DOWN_PCT * 100)),
           termYears: String(credit.TERM_YEARS),
           idNumber: t("borrower.scan.national-id.value-id-number"),
           dateOfBirth: t("borrower.scan.national-id.value-date-of-birth"),
-          incomeCLP: String(credit.INCOME_USD),
+          incomeCLP: String(credit.INCOME_CLP),
           streetAddress: t("borrower.sim.demo-street-address"),
-          provincia: "San José",
-          canton: t("borrower.sim.demo-canton"),
-          distrito: t("borrower.sim.demo-distrito")
+          region: "Región Metropolitana",
+          comuna: t("borrower.sim.demo-comuna"),
+          ciudad: t("borrower.sim.demo-ciudad")
         };
       }
 
@@ -696,11 +696,11 @@
       /* Half of a typed income is not an income. Until the figure is at least
          plausible, the affordability panel says nothing rather than reporting a
          ratio of several million percent against the first digit she typed. */
-      var MIN_STATED_INCOME_USD = 200;
+      var MIN_STATED_INCOME_CLP = 200000;
 
       function statedIncome(form) {
         var income = typedNumber((form || emptyForm()).incomeCLP);
-        return income && income >= MIN_STATED_INCOME_USD ? income : null;
+        return income && income >= MIN_STATED_INCOME_CLP ? income : null;
       }
 
       /** A number typed into a field, or null when there is nothing usable yet. */
@@ -722,8 +722,8 @@
         var incomeCLP = statedIncome(answered);
         var termYears = typedNumber(answered.termYears);
         var downPct = typedNumber(answered.downPct);
-        if (propertyUF) options.propertyUSD = propertyUF;
-        if (incomeCLP) options.incomeUSD = incomeCLP;
+        if (propertyUF) options.propertyUF = propertyUF;
+        if (incomeCLP) options.incomeCLP = incomeCLP;
         if (termYears) options.years = termYears;
         if (downPct) options.downPct = downPct / 100;
         return options;
@@ -823,21 +823,21 @@
        */
       var PARAM_SETS = {
         "case-property": function (f) {
-          return { case: CASE_ID, property: money(f.propertyUSD) };
+          return { case: CASE_ID, property: money(f.propertyUF) };
         },
         "income-ratio": function (f) {
           return {
-            income: money(f.incomeUSD),
-            payment: money(f.paymentUSD),
+            income: credit.formatCLP(f.incomeCLP),
+            payment: money(f.paymentUF, 2),
             ratio: credit.formatPct(f.dti.ratio * 100),
             cap: credit.formatPct(f.dti.cap * 100)
           };
         },
         "down-payment": function (f) {
-          return { downPayment: money(f.downPaymentUSD) };
+          return { downPayment: money(f.downPaymentUF) };
         },
         property: function (f) {
-          return { property: money(f.propertyUSD) };
+          return { property: money(f.propertyUF) };
         }
       };
 
@@ -854,7 +854,7 @@
 
       var INTRO_CALL_SLOTS = ["tomorrow-morning", "tomorrow-afternoon", "day-after-morning"];
       var SPEEDS = [0.5, 0.75, 1, 2, 4];
-      var MONEY_UNITS = ["USD", "CRC"];
+      var MONEY_UNITS = ["UF", "CLP"];
 
       var STEP_KINDS = [
         "assistant",
@@ -1138,10 +1138,10 @@
           started: false,
           form: emptyForm(),
           speed: 1,
-          /* USD is the ground truth every figure is computed in; colones are
-             a display option laid over it, never a second currency to price
-             in. See MONEY_UNITS. */
-          moneyUnit: "USD",
+          /* UF is the ground truth every figure is computed in; pesos are a
+             display option laid over it, never a second unit to price in.
+             See MONEY_UNITS. */
+          moneyUnit: "UF",
           openDocumentId: null,
           drawerTab: "review",
           notificationsOpen: false,
@@ -1178,7 +1178,7 @@
           started: viewState.started === true,
           form: copyForm(viewState.form),
           speed: viewState.speed,
-          moneyUnit: MONEY_UNITS.indexOf(viewState.moneyUnit) !== -1 ? viewState.moneyUnit : "USD",
+          moneyUnit: MONEY_UNITS.indexOf(viewState.moneyUnit) !== -1 ? viewState.moneyUnit : "UF",
           openDocumentId: viewState.openDocumentId,
           drawerTab: viewState.drawerTab,
           notificationsOpen: viewState.notificationsOpen === true,
@@ -2634,45 +2634,57 @@
         );
       }
 
-      var CR_PROVINCES = [
-        "San José",
-        "Alajuela",
-        "Cartago",
-        "Heredia",
-        "Guanacaste",
-        "Puntarenas",
-        "Limón"
+      /* Chile's sixteen regions, north to south, the way the Civil Registry
+         and every Chilean form list them. The demo case sits in the
+         Metropolitan Region. */
+      var CL_REGIONS = [
+        "Arica y Parinacota",
+        "Tarapacá",
+        "Antofagasta",
+        "Atacama",
+        "Coquimbo",
+        "Valparaíso",
+        "Región Metropolitana",
+        "O’Higgins",
+        "Maule",
+        "Ñuble",
+        "Biobío",
+        "La Araucanía",
+        "Los Ríos",
+        "Los Lagos",
+        "Aysén",
+        "Magallanes"
       ];
 
       /* The property's address, and a mocked "Verify address" check. This is a
          demo stand-in: a real integration would call Google Maps/Places from
          the server to confirm the address exists before the case moves on. */
       function renderAddressFields(form, viewState) {
-        var provinceOptions = CR_PROVINCES.map(function (province) {
+        var regionOptions = CL_REGIONS.map(function (region) {
           return (
             '<option value="' +
-            escapeHtml(province) +
+            escapeHtml(region) +
             '"' +
-            (form.provincia === province ? " selected" : "") +
+            (form.region === region ? " selected" : "") +
             ">" +
-            escapeHtml(province) +
+            escapeHtml(region) +
             "</option>"
           );
         }).join("");
         return (
           simField("streetAddress", "borrower.sim.street-address", form.streetAddress) +
-          '<div class="sim-field"><label class="sim-label" for="field-provincia">' +
-          text("borrower.sim.provincia") +
+          '<div class="sim-field"><label class="sim-label" for="field-region">' +
+          text("borrower.sim.region") +
           '</label><span class="sim-value' +
-          (form.provincia ? " filled" : "") +
-          '"><select id="field-provincia" data-form-input="provincia">' +
+          (form.region ? " filled" : "") +
+          '"><select id="field-region" data-form-input="region">' +
           '<option value="">' +
-          text("borrower.sim.provincia-placeholder") +
+          text("borrower.sim.region-placeholder") +
           "</option>" +
-          provinceOptions +
+          regionOptions +
           "</select></span></div>" +
-          simField("canton", "borrower.sim.canton", form.canton) +
-          simField("distrito", "borrower.sim.distrito", form.distrito) +
+          simField("comuna", "borrower.sim.comuna", form.comuna) +
+          simField("ciudad", "borrower.sim.ciudad", form.ciudad) +
           '<div class="sim-actions">' +
           '<button type="button" class="secondary" data-verify-address' +
           (viewState && viewState.addressVerifying ? " disabled" : "") +
@@ -2745,14 +2757,14 @@
             }
           ]) +
           simField("propertyUF", "borrower.sim.property-value", form.propertyUF, {
-            prefix: "$",
+            prefix: "UF",
             numeric: true,
-            note: propertyUF ? money(f.propertyUSD) : ""
+            note: propertyUF ? money(f.propertyUF) : ""
           }) +
           simField("downPct", "borrower.sim.down-payment", form.downPct, {
             suffix: "%",
             numeric: true,
-            note: downPct ? money(f.downPaymentUSD) : ""
+            note: downPct ? money(f.downPaymentUF) : ""
           }) +
           sectionTitle("borrower.sim.section-details") +
           simField("idNumber", "borrower.sim.id-number", form.idNumber) +
@@ -2760,7 +2772,7 @@
           simField("incomeCLP", "borrower.sim.income", form.incomeCLP, {
             prefix: "$",
             numeric: true,
-            note: statedIncome(form) ? money(f.incomeUSD) : ""
+            note: statedIncome(form) ? credit.formatCLP(f.incomeCLP) : ""
           }) +
           sectionTitle("borrower.sim.section-address") +
           renderAddressFields(form, viewState) +
@@ -2821,16 +2833,16 @@
           '<div class="summary-group"><span class="summary-group-title">' +
           text("borrower.sim.group-property") +
           "</span>" +
-          summaryRow("borrower.sim.field-value", known(hasProperty, money(f.propertyUSD))) +
+          summaryRow("borrower.sim.field-value", known(hasProperty, money(f.propertyUF))) +
           summaryRow(
             "borrower.sim.down-payment",
-            known(hasProperty && hasDown, money(f.downPaymentUSD))
+            known(hasProperty && hasDown, money(f.downPaymentUF))
           ) +
           "</div>" +
           '<div class="summary-group"><span class="summary-group-title">' +
           text("borrower.sim.group-loan") +
           "</span>" +
-          summaryRow("borrower.sim.field-amount", known(hasProperty, money(f.loanUSD))) +
+          summaryRow("borrower.sim.field-amount", known(hasProperty, money(f.loanUF))) +
           summaryRow(
             "borrower.sim.term",
             known(hasTerm, f.termYears + " " + t("borrower.sim.years"))
@@ -2849,24 +2861,24 @@
           '<div class="cap-body">' +
           summaryRow(
             "borrower.sim.simulated-payment",
-            known(hasProperty, money(f.paymentUSD))
+            known(hasProperty, money(f.paymentUF, 2))
           ) +
           '<div class="load-bar"><span class="load-bar-fill' +
           (priced && f.dti.overCap ? " over-cap" : "") +
           '" style="width:' +
           (priced ? fill.toFixed(1) : "0") +
           '%"></span></div>' +
-          summaryRow("borrower.sim.stated-income", known(hasIncome, money(f.incomeUSD))) +
+          summaryRow("borrower.sim.stated-income", known(hasIncome, credit.formatCLP(f.incomeCLP))) +
           summaryRow(
             "borrower.sim.max-payment",
-            known(hasIncome, money(f.incomeUSD * f.dti.cap)),
+            known(hasIncome, credit.formatCLP(f.incomeCLP * f.dti.cap)),
             { cap: credit.formatPct(capPct) }
           ) +
           summaryRow(
             "borrower.check.affordability.label",
             known(priced, credit.formatPct(ratioPct))
           ) +
-          summaryRow("borrower.sim.headroom", known(priced, money(f.dti.headroomUSD))) +
+          summaryRow("borrower.sim.headroom", known(priced, credit.formatCLP(f.dti.headroomCLP))) +
           "</div></div>" +
           "</aside>"
         );
@@ -2875,7 +2887,7 @@
       /* The three figures the check lines quote back at her. */
       function checkParams(f) {
         return {
-          value: money(f.propertyUSD),
+          value: money(f.propertyUF),
           cap: credit.formatPct(f.dti.cap * 100),
           ratio: credit.formatPct(f.dti.ratio * 100)
         };
@@ -2938,13 +2950,13 @@
           '<div class="result-column chosen"><span class="eyebrow">' +
           text("borrower.result.financing") +
           '</span><span class="result-amount">' +
-          escapeHtml(money(f.paymentUSD)) +
+          escapeHtml(money(f.paymentUF, 2)) +
           "</span>" +
-          figureRow("borrower.result.loan", money(f.loanUSD)) +
+          figureRow("borrower.result.loan", money(f.loanUF)) +
           figureRow("borrower.result.rate", credit.formatPct(f.annualRate * 100, 2)) +
           figureRow(
             "borrower.result.down-payment",
-            t("borrower.result.with-financing", { amount: money(f.downPaymentUSD) })
+            t("borrower.result.with-financing", { amount: money(f.downPaymentUF) })
           ) +
           figureRow(
             "borrower.sim.term",
@@ -4088,9 +4100,9 @@
         { kind: "type", field: "dateOfBirth", charDelay: 62, delay: 620 },
         { kind: "type", field: "incomeCLP", charDelay: 68, delay: 760 },
         { kind: "type", field: "streetAddress", charDelay: 55, delay: 620 },
-        { kind: "pick", field: "provincia", value: "San José", delay: 500 },
-        { kind: "type", field: "canton", charDelay: 62, delay: 560 },
-        { kind: "type", field: "distrito", charDelay: 62, delay: 560 },
+        { kind: "pick", field: "region", value: "Región Metropolitana", delay: 500 },
+        { kind: "type", field: "comuna", charDelay: 62, delay: 560 },
+        { kind: "type", field: "ciudad", charDelay: 62, delay: 560 },
         { kind: "pick", field: "termYears", value: String(credit.TERM_YEARS), delay: 900 },
         /* The nine sources, asked one at a time and watched answering. This is
            the claim the whole first phase exists to make, so it is given room:

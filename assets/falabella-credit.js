@@ -8,6 +8,11 @@
  * dual guaranteed/standard comparison — so every figure below is the one
  * number a page shows, not a pair to choose between.
  *
+ * Chilean mortgages are written in UF, the inflation-indexed unit of account,
+ * and paid in pesos. So the property, the loan and the payment are UF figures;
+ * income, which is earned in pesos, is a peso figure; and UF_VALUE below is
+ * the one place the two units meet.
+ *
  * DOM-free and dependency-free. Formatters take their locale from
  * FalabellaCopy.NUMBER_LOCALE when the copy layer is loaded and fall back to
  * en-US when it is not, so this module is testable on its own.
@@ -17,7 +22,12 @@
 (function () {
   /* ============================================================= constants */
 
-  var PROPERTY_USD = 130000;
+  /* A fixed demo UF, not a live one: what is being shown is "what does this
+     come to in pesos", not a real-time feed. Banco Central de Chile. */
+  var UF_VALUE = 40844.79;
+  var UF_DATE = "2026-08-05";
+
+  var PROPERTY_UF = 3500;
   var DOWN_PCT = 0.1;
   var TERM_YEARS = 30;
 
@@ -25,21 +35,17 @@
   var LTV = 0.9;
 
   /* Life and fire cover, added to principal and interest to make the payment
-     the borrower actually pays. A flat monthly amount, in dollars. */
-  var INSURANCE_USD = 25;
+     the borrower actually pays. A flat monthly amount, in UF like the rest of
+     the loan. */
+  var INSURANCE_UF = 0.62;
 
-  var INCOME_USD = 3550;
+  /* Earned and verified in pesos, which is why this one is not a UF figure. */
+  var INCOME_CLP = 2400000;
   var DTI_CAP = 0.3;
   var STRESS_BP = 200;
 
   /* The mortgage officer's delegated approval authority. */
-  var OFFICER_AUTHORITY_USD = 150000;
-
-  /* Every figure is priced and computed in USD; colones are a display option
-     laid over that ground truth, never a second currency the arithmetic
-     runs in. A fixed demo rate, not a live one — the point being shown is
-     "what would this look like in colones", not a real-time feed. */
-  var USD_TO_CRC = 520;
+  var OFFICER_AUTHORITY_UF = 4000;
 
   var DEFAULT_NUMBER_LOCALE = "en-US";
 
@@ -62,19 +68,19 @@
   /* ========================================================== arithmetic */
 
   /* The loan amount at a given loan-to-value. */
-  function loanFor(propertyUSD, ltv) {
-    return fallback(propertyUSD, PROPERTY_USD) * fallback(ltv, LTV);
+  function loanFor(propertyUF, ltv) {
+    return fallback(propertyUF, PROPERTY_UF) * fallback(ltv, LTV);
   }
 
-  function downPaymentUSD(propertyUSD, downPct) {
-    return fallback(propertyUSD, PROPERTY_USD) * fallback(downPct, DOWN_PCT);
+  function downPaymentUF(propertyUF, downPct) {
+    return fallback(propertyUF, PROPERTY_UF) * fallback(downPct, DOWN_PCT);
   }
 
-  /* Level payment on a USD-denominated annuity, with monthly-equivalent
+  /* Level payment on a UF-denominated annuity, with monthly-equivalent
      compounding: i = (1+annual)^(1/12) - 1, not annual/12. Principal and
-     interest only — see monthlyPaymentUSD. */
-  function payment(principalUSD, annualRate, years) {
-    var principal = fallback(principalUSD, loanFor());
+     interest only — see monthlyPaymentUF. */
+  function payment(principalUF, annualRate, years) {
+    var principal = fallback(principalUF, loanFor());
     var rate = fallback(annualRate, RATE);
     var term = fallback(years, TERM_YEARS);
     var i = Math.pow(1 + rate, 1 / 12) - 1;
@@ -84,25 +90,31 @@
 
   /* What the borrower is quoted: principal, interest, and the cover. This is
      the EMP — the Estimated Monthly Payment / Pago Mensual Estimado. */
-  function monthlyPaymentUSD(principalUSD, annualRate, years, insuranceUSD) {
+  function monthlyPaymentUF(principalUF, annualRate, years, insuranceUF) {
     return (
-      payment(principalUSD, annualRate, years) + fallback(insuranceUSD, INSURANCE_USD)
+      payment(principalUF, annualRate, years) + fallback(insuranceUF, INSURANCE_UF)
     );
   }
 
-  /* Payment to income, with the cap stated rather than applied. */
-  function dti(paymentUSD, incomeUSD, cap) {
-    var pay = fallback(paymentUSD, monthlyPaymentUSD());
-    var income = fallback(incomeUSD, INCOME_USD);
+  /* The one crossing between the two units: UF in, pesos out. */
+  function toCLP(uf, ufValue) {
+    return fallback(uf, 0) * fallback(ufValue, UF_VALUE);
+  }
+
+  /* Payment to income, with the cap stated rather than applied. Both sides are
+     in pesos, because pesos is what the income is earned in. */
+  function dti(paymentCLP, incomeCLP, cap) {
+    var pay = fallback(paymentCLP, toCLP(monthlyPaymentUF()));
+    var income = fallback(incomeCLP, INCOME_CLP);
     var limit = fallback(cap, DTI_CAP);
     var ratio = income > 0 ? pay / income : 0;
     return {
-      paymentUSD: pay,
-      incomeUSD: income,
+      paymentCLP: pay,
+      incomeCLP: income,
       ratio: ratio,
       cap: limit,
       overCap: ratio > limit,
-      headroomUSD: income * limit - pay
+      headroomCLP: income * limit - pay
     };
   }
 
@@ -113,16 +125,18 @@
     var stressBp = fallback(options.stressBp, STRESS_BP);
     var baseRate = fallback(options.annualRate, RATE);
     var stressedRate = baseRate + stressBp / 10000;
-    var paymentUSD = monthlyPaymentUSD(
-      fallback(options.principalUSD, loanFor(options.propertyUSD, options.ltv)),
+    var paymentUF = monthlyPaymentUF(
+      fallback(options.principalUF, loanFor(options.propertyUF, options.ltv)),
       stressedRate,
       options.years,
-      options.insuranceUSD
+      options.insuranceUF
     );
-    var result = dti(paymentUSD, options.incomeUSD, options.cap);
+    var paymentCLP = toCLP(paymentUF, options.ufValue);
+    var result = dti(paymentCLP, options.incomeCLP, options.cap);
     result.stressBp = stressBp;
     result.baseRate = baseRate;
     result.stressedRate = stressedRate;
+    result.paymentUF = paymentUF;
     return result;
   }
 
@@ -130,44 +144,52 @@
      renders from it instead of recomputing. */
   function caseFigures(input) {
     var options = input || {};
-    var propertyUSD = fallback(options.propertyUSD, PROPERTY_USD);
+    var propertyUF = fallback(options.propertyUF, PROPERTY_UF);
     var ltv = fallback(options.ltv, LTV);
     var annualRate = fallback(options.annualRate, RATE);
     var years = fallback(options.years, TERM_YEARS);
-    var incomeUSD = fallback(options.incomeUSD, INCOME_USD);
-    var loanUSD = loanFor(propertyUSD, ltv);
-    var paymentUSD = monthlyPaymentUSD(loanUSD, annualRate, years, options.insuranceUSD);
+    var incomeCLP = fallback(options.incomeCLP, INCOME_CLP);
+    var loanUF = loanFor(propertyUF, ltv);
+    var paymentUF = monthlyPaymentUF(loanUF, annualRate, years, options.insuranceUF);
+    var paymentCLP = toCLP(paymentUF, options.ufValue);
 
     return {
-      propertyUSD: propertyUSD,
-      loanUSD: loanUSD,
+      propertyUF: propertyUF,
+      loanUF: loanUF,
       ltv: ltv,
       annualRate: annualRate,
       termYears: years,
-      downPaymentUSD: downPaymentUSD(propertyUSD, options.downPct),
-      insuranceUSD: fallback(options.insuranceUSD, INSURANCE_USD),
-      paymentUSD: paymentUSD,
-      incomeUSD: incomeUSD,
-      dti: dti(paymentUSD, incomeUSD, options.cap),
-      stressedDti: stressedDti(options)
+      downPaymentUF: downPaymentUF(propertyUF, options.downPct),
+      insuranceUF: fallback(options.insuranceUF, INSURANCE_UF),
+      paymentUF: paymentUF,
+      paymentCLP: paymentCLP,
+      incomeCLP: incomeCLP,
+      dti: dti(paymentCLP, incomeCLP, options.cap),
+      stressedDti: stressedDti(options),
+      ufValue: fallback(options.ufValue, UF_VALUE),
+      ufDate: UF_DATE
     };
   }
 
   /* ============================================================ formatters */
 
-  /* Whole dollars: the demo does not price loans to the cent. */
-  function formatUSD(value, locale) {
+  /* Whole UF by default; the payment asks for two places, because one UF is
+     worth enough that the fraction of it is a real amount of money. */
+  function formatUF(value, decimals, locale) {
+    var places = fallback(decimals, 0);
     return (
-      "$" + Math.round(fallback(value, 0)).toLocaleString(numberLocale(locale))
+      "UF " +
+      Number(fallback(value, 0)).toLocaleString(numberLocale(locale), {
+        minimumFractionDigits: places,
+        maximumFractionDigits: places
+      })
     );
   }
 
-  /* The same figure, laid over in colones at the fixed demo rate. Whole
-     colones only, for the same reason formatUSD rounds to the dollar. */
-  function formatCRC(usdValue, locale) {
+  /* Pesos are always whole: Chile does not price in cents. */
+  function formatCLP(value, locale) {
     return (
-      "₡" +
-      Math.round(fallback(usdValue, 0) * USD_TO_CRC).toLocaleString(numberLocale(locale))
+      "$" + Math.round(fallback(value, 0)).toLocaleString(numberLocale(locale))
     );
   }
 
@@ -200,29 +222,31 @@
   /* =================================================================== api */
 
   globalThis.FalabellaCredit = {
-    PROPERTY_USD: PROPERTY_USD,
+    UF_VALUE: UF_VALUE,
+    UF_DATE: UF_DATE,
+    PROPERTY_UF: PROPERTY_UF,
     DOWN_PCT: DOWN_PCT,
     TERM_YEARS: TERM_YEARS,
     RATE: RATE,
     LTV: LTV,
-    INSURANCE_USD: INSURANCE_USD,
-    INCOME_USD: INCOME_USD,
+    INSURANCE_UF: INSURANCE_UF,
+    INCOME_CLP: INCOME_CLP,
     DTI_CAP: DTI_CAP,
     STRESS_BP: STRESS_BP,
-    OFFICER_AUTHORITY_USD: OFFICER_AUTHORITY_USD,
-    USD_TO_CRC: USD_TO_CRC,
+    OFFICER_AUTHORITY_UF: OFFICER_AUTHORITY_UF,
 
     payment: payment,
-    monthlyPaymentUSD: monthlyPaymentUSD,
+    monthlyPaymentUF: monthlyPaymentUF,
+    toCLP: toCLP,
     loanFor: loanFor,
-    downPaymentUSD: downPaymentUSD,
+    downPaymentUF: downPaymentUF,
     dti: dti,
     stressedDti: stressedDti,
     caseFigures: caseFigures,
 
     numberLocale: numberLocale,
-    formatUSD: formatUSD,
-    formatCRC: formatCRC,
+    formatUF: formatUF,
+    formatCLP: formatCLP,
     formatPct: formatPct,
     formatDate: formatDate
   };
