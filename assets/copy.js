@@ -4,7 +4,7 @@
  * FalabellaCopy.t(). No page markup or render function may hold English text.
  *
  * ADDING SPANISH: this file is the only place it happens. Append "es" to
- * LOCALES, add "es" to NUMBER_LOCALE ("es-CR"), and add a COPY.es object with
+ * LOCALES, add "es" to NUMBER_LOCALE ("es-CL"), and add a COPY.es object with
  * the same keys as COPY.en. Nothing in borrower.html or lender.html changes.
  * The "es" seam is deliberately absent rather than present-and-empty, so
  * hasLocale("es") is honestly false until the translation actually exists.
@@ -119,7 +119,7 @@
       "audit.agent-affordability-recalculated": "Agent recalculated affordability",
       "audit.agent-handoff-prepared": "Agent prepared the handoff",
 
-      "audit.detail.intake-reviewed": "Checklist built from the product rules: nine documents, first-home declaration. No earlier file for this ID number.",
+      "audit.detail.intake-reviewed": "Checklist built from the product rules: nine documents, first-home declaration. No earlier file for this RUT.",
       "audit.detail.checklist-message":
         "“Hi Javiera — here is everything we need for the mortgage. Upload each one as you get it and I will check them as they land.”",
       "audit.detail.down-payment-checked":
@@ -129,9 +129,9 @@
       "audit.detail.followup-two":
         "Reminder 2 of 3. Both documents arrived within the next two hours.",
       "audit.detail.tax-folder-checked":
-        "ID number on page 1 came through unreadable. 1 of 4 fields could not be read, so the document went back.",
+        "RUT on page 1 came through unreadable. 1 of 4 fields could not be read, so the document went back.",
       "audit.detail.tax-folder-message":
-        "“The ID number on page 1 of your tax folder came through unreadable — could you send that page again?”",
+        "“The RUT on page 1 of your tax folder came through unreadable — could you send that page again?”",
       "audit.detail.registry-checked":
         "Certificate pulled from the Conservador de Bienes Raíces. Folio 1,842 No.1,190 (2024): a mortgage in favour of another bank, not declared on the application.",
       "audit.detail.policy-checked":
@@ -167,12 +167,16 @@
       "lender.language.es-title": "Ver este portal en español",
       "lender.status.language": "Language switched to English.",
       "lender.money.aria-label": "Show amounts in",
-      "lender.money.usd": "$",
-      "lender.money.crc": "₡",
-      "lender.money.usd-title": "Show amounts in US dollars",
-      "lender.money.crc-title": "Show amounts in Costa Rican colones (approximate)",
-      "lender.status.money-usd": "Amounts are now shown in US dollars.",
-      "lender.status.money-crc": "Amounts are now shown in Costa Rican colones.",
+      /* Chilean mortgages are written in UF and paid in pesos. Which one is
+         wanted depends on who is being answered, so both are one click apart. */
+      "lender.money.uf": "UF",
+      "lender.money.uf-title": "Show amounts in UF (unidad de fomento)",
+      /* "CLP" rather than a bare "$": beside "UF" it reads as the other unit,
+         where "$" read as a button that might do something to the money. */
+      "lender.money.clp": "CLP",
+      "lender.money.clp-title": "Show amounts in Chilean pesos",
+      "lender.status.money-uf": "Amounts are now shown in UF.",
+      "lender.status.money-clp": "Amounts are now shown in Chilean pesos.",
 
       "lender.switch-to-borrower": "Switch to borrower view",
       "lender.switch-to-borrower-aria":
@@ -258,7 +262,7 @@
       "lender.notifications.detail.title-certificate":
         "The certificate records a mortgage in favour of another bank at Folio 1,842 No.1,190 (2024). The application declared no encumbrances. Everything else on the certificate — owner, tax roll, validity — matched.",
       "lender.notifications.detail.tax-folder":
-        "Page 1 arrived cropped and the taxpayer ID number could not be read (1-0234-05_7). The other three fields on the folder matched.",
+        "Page 1 arrived cropped and the taxpayer RUT could not be read (18.452.30_-4). The other three fields on the folder matched.",
       "lender.notifications.detail.purchase-promise":
         "The purchase promise was signed three weeks after the appraisal report. It should have followed right away. Everything else on the document — parties, price, property — matched the file.",
 
@@ -353,9 +357,9 @@
       "lender.application.loan-heading": "The loan request",
       "lender.application.borrower-heading": "The borrower",
       "lender.application.address": "Address",
-      "lender.application.province": "Province",
-      "lender.application.canton": "Canton",
-      "lender.application.district": "District",
+      "lender.application.region": "Region",
+      "lender.application.comuna": "Comuna",
+      "lender.application.ciudad": "City",
       "lender.application.address-verified": "Address verified",
       "lender.application.address-verified-yes": "Verified",
       "lender.application.address-verified-no": "Not verified",
@@ -370,7 +374,7 @@
       "lender.application.rate": "Rate",
       "lender.application.financing": "Financing",
       "lender.application.name": "Full name",
-      "lender.application.id-number": "ID Number",
+      "lender.application.id-number": "RUT (national ID)",
       "lender.application.date-of-birth": "Date of birth",
       "lender.application.income": "Verified monthly net income",
       "lender.application.phone": "Phone (WhatsApp)",
@@ -451,8 +455,8 @@
         "Mortgage in favour of another bank — Folio 1,842 No.1,190 (2024)",
       "lender.documents.encumbrance-note":
         "Confirm whether this mortgage is the developer’s construction loan and whether it is released in the same deed.",
-      "lender.documents.owner-stated": "Inmobiliaria Aconcagua S.A.",
-      "lender.documents.owner-found": "INMOBILIARIA ACONCAGUA S.A.",
+      "lender.documents.owner-stated": "Inmobiliaria Aconcagua SpA",
+      "lender.documents.owner-found": "INMOBILIARIA ACONCAGUA SpA",
       "lender.documents.tax-roll-value": "1234-56",
       "lender.documents.validity-stated": "Issued within the last 30 days",
       "lender.documents.validity-found": "Issued 3 days ago",
@@ -464,7 +468,7 @@
       "lender.check.status.note": "Note",
 
       "lender.check.national-id.full-name": "Full name",
-      "lender.check.national-id.id-number": "ID Number",
+      "lender.check.national-id.id-number": "RUT",
       "lender.check.national-id.date-of-birth": "Date of birth",
       "lender.check.national-id.validity": "Document validity",
       "lender.check.payslips.stated-income": "Stated net income",
@@ -477,7 +481,7 @@
       "lender.check.pension-contributions.months": "Months contributed",
       "lender.check.pension-contributions.continuity": "Continuity",
       "lender.check.pension-contributions.file-source": "File source",
-      "lender.check.tax-folder.taxpayer-id-number": "Taxpayer ID Number",
+      "lender.check.tax-folder.taxpayer-id-number": "Taxpayer RUT",
       "lender.check.tax-folder.purpose": "Folder purpose",
       "lender.check.tax-folder.periods": "Periods included",
       "lender.check.tax-folder.issue-date": "Issue date",
@@ -588,9 +592,9 @@
       "lender.assistant.answer-title-settled":
         "The title certificate is settled — {verdict}. The encumbrance at Folio 1,842 No.1,190 (2024) is covered by the release condition rather than by a second document.",
       "lender.assistant.answer-tax-open":
-        "Page 1 of the tax folder arrived cropped and the taxpayer ID number could not be read (1-0234-05_7). The other three fields matched, so the folder is the right document — it needs page 1 again, in full.",
+        "Page 1 of the tax folder arrived cropped and the taxpayer RUT could not be read (18.452.30_-4). The other three fields matched, so the folder is the right document — it needs page 1 again, in full.",
       "lender.assistant.answer-tax-settled":
-        "The tax folder is settled — {verdict}. The ID number on page 1 reads correctly.",
+        "The tax folder is settled — {verdict}. The RUT on page 1 reads correctly.",
       "lender.assistant.answer-approval-items":
         "Approval is held by {count} open review item(s): {items}. The conditions are checked after those close.",
       "lender.assistant.answer-approval-conditions":
@@ -673,7 +677,7 @@
       "lender.condition.heading": "Conditions",
       "lender.condition.c1":
         "Simultaneous release of the mortgage at Folio 1,842 No.1,190 (2024) in the same deed.",
-      "lender.condition.c2": "Complete tax folder with a legible ID number on page 1.",
+      "lender.condition.c2": "Complete tax folder with a legible RUT on page 1.",
       "lender.condition.cleared": "Cleared",
       "lender.condition.open": "Open",
       "lender.condition.cleared-on": "Cleared {date}",
@@ -734,7 +738,7 @@
       /* Officer identity */
       "lender.officer.name": "Carolina Reyes",
       "lender.officer.role": "Mortgage officer, Santiago desk",
-      "lender.officer.authority": "$150,000",
+      "lender.officer.authority": "UF 4,000",
       "lender.team.name": "BancoWeston mortgage team",
 
       /* Announcements */
@@ -786,7 +790,7 @@
       "risk.policy.payment-to-income":
         "Payment to income at or below 30% of verified net income.",
       "risk.policy.financing": "Financing up to 90% of the property value.",
-      "risk.policy.property-cap": "New homes up to $150,000.",
+      "risk.policy.property-cap": "New homes up to UF 4,000.",
       "risk.policy.employment":
         "Permanent contract, at least 12 months of tenure, and no gaps in pension contributions.",
       "risk.policy.appraisal":
@@ -830,12 +834,12 @@
       "borrower.control.language-en": "English",
       "borrower.control.language-es": "Español",
       "borrower.control.money": "Amounts",
-      "borrower.control.money-usd": "$",
-      "borrower.control.money-crc": "₡",
-      "borrower.control.money-usd-title": "Show amounts in US dollars",
-      "borrower.control.money-crc-title": "Show amounts in Costa Rican colones (approximate)",
-      "borrower.status.money-usd": "Amounts are now shown in US dollars.",
-      "borrower.status.money-crc": "Amounts are now shown in Costa Rican colones.",
+      "borrower.control.money-uf": "UF",
+      "borrower.control.money-clp": "CLP",
+      "borrower.control.money-uf-title": "Show amounts in UF (unidad de fomento)",
+      "borrower.control.money-clp-title": "Show amounts in Chilean pesos",
+      "borrower.status.money-uf": "Amounts are now shown in UF.",
+      "borrower.status.money-clp": "Amounts are now shown in Chilean pesos.",
       "borrower.status.language": "Language switched to English.",
       "borrower.control.playing": "Playing demo",
       "borrower.control.paused": "Demo paused",
@@ -859,7 +863,7 @@
       "borrower.sim.property-value": "Property value",
       "borrower.sim.down-payment": "Down payment",
       "borrower.sim.full-name": "Full name",
-      "borrower.sim.id-number": "ID Number",
+      "borrower.sim.id-number": "RUT (national ID)",
       "borrower.sim.date-of-birth": "Date of birth",
       "borrower.sim.income": "Monthly net income",
       "borrower.sim.phone": "Phone (WhatsApp)",
@@ -892,16 +896,16 @@
       /* The property's address */
       "borrower.sim.section-address": "The property's address",
       "borrower.sim.street-address": "Street address",
-      "borrower.sim.provincia": "Province",
-      "borrower.sim.provincia-placeholder": "Select a province",
-      "borrower.sim.canton": "Canton",
-      "borrower.sim.distrito": "District",
+      "borrower.sim.region": "Region",
+      "borrower.sim.region-placeholder": "Select a region",
+      "borrower.sim.comuna": "Comuna",
+      "borrower.sim.ciudad": "City",
       "borrower.sim.verify-address": "Verify address",
       "borrower.sim.verify-address-checking": "Verifying…",
       "borrower.sim.address-verified": "Address verified",
-      "borrower.sim.demo-street-address": "Residencial Aconcagua, Casa 12, San Pedro",
-      "borrower.sim.demo-canton": "Montes de Oca",
-      "borrower.sim.demo-distrito": "San Pedro",
+      "borrower.sim.demo-street-address": "Camino Rinconada 2450, Casa 12",
+      "borrower.sim.demo-comuna": "Maipú",
+      "borrower.sim.demo-ciudad": "Santiago",
 
       /* The introductory call */
       "borrower.intro-call.schedule": "Schedule your call",
@@ -932,7 +936,7 @@
       /* Portal and checklist */
       "borrower.portal.title": "Borrower portal",
       "borrower.portal.application": "Application {case}",
-      "borrower.portal.property": "New house · Aconcagua project, San Pedro",
+      "borrower.portal.property": "New house · Aconcagua project, Maipú",
       "borrower.portal.status-documents": "Awaiting documents",
       "borrower.portal.status-review": "In credit review",
       "borrower.portal.status-human": "1 item in specialist review",
@@ -965,8 +969,8 @@
          title certificate's encumbrance line is the one that stops the case. */
       "borrower.scan.national-id.org": "Chilean Civil Registry",
       "borrower.scan.national-id.title": "National ID card",
-      "borrower.scan.national-id.row-id-number": "ID Number",
-      "borrower.scan.national-id.value-id-number": "1-0234-0567",
+      "borrower.scan.national-id.row-id-number": "RUT",
+      "borrower.scan.national-id.value-id-number": "18.452.309-4",
       "borrower.scan.national-id.row-given-names": "Given names",
       "borrower.scan.national-id.value-given-names": "JAVIERA ANDREA",
       "borrower.scan.national-id.row-surnames": "Surnames",
@@ -976,20 +980,20 @@
       "borrower.scan.national-id.row-expiry": "Expiry",
       "borrower.scan.national-id.value-expiry": "14-11-2029",
 
-      "borrower.scan.payslips.org": "CONSTRUCTORA ANDES S.A.",
+      "borrower.scan.payslips.org": "CONSTRUCTORA ANDES SpA",
       "borrower.scan.payslips.title": "Payslip — July 2026",
       "borrower.scan.payslips.row-employee": "Employee",
       "borrower.scan.payslips.value-employee": "JAVIERA SOTO MIRANDA",
-      "borrower.scan.payslips.row-id-number": "ID Number",
-      "borrower.scan.payslips.value-id-number": "1-0234-0567",
+      "borrower.scan.payslips.row-id-number": "RUT",
+      "borrower.scan.payslips.value-id-number": "18.452.309-4",
       "borrower.scan.payslips.row-base-salary": "Base salary",
-      "borrower.scan.payslips.value-base-salary": "$4,200",
+      "borrower.scan.payslips.value-base-salary": "$2,850,000",
       "borrower.scan.payslips.row-deductions": "Total deductions",
-      "borrower.scan.payslips.value-deductions": "$650",
+      "borrower.scan.payslips.value-deductions": "$450,000",
       "borrower.scan.payslips.row-net-pay": "Net pay",
-      "borrower.scan.payslips.value-net-pay": "$3,550",
+      "borrower.scan.payslips.value-net-pay": "$2,400,000",
 
-      "borrower.scan.employment-tenure.org": "CONSTRUCTORA ANDES S.A.",
+      "borrower.scan.employment-tenure.org": "CONSTRUCTORA ANDES SpA",
       "borrower.scan.employment-tenure.title": "Certificate of length of service",
       "borrower.scan.employment-tenure.row-employee": "Employee",
       "borrower.scan.employment-tenure.value-employee": "JAVIERA SOTO MIRANDA",
@@ -1004,8 +1008,8 @@
       "borrower.scan.pension-contributions.title": "Pension contributions certificate",
       "borrower.scan.pension-contributions.row-member": "Member",
       "borrower.scan.pension-contributions.value-member": "JAVIERA SOTO MIRANDA",
-      "borrower.scan.pension-contributions.row-id-number": "ID Number",
-      "borrower.scan.pension-contributions.value-id-number": "1-0234-0567",
+      "borrower.scan.pension-contributions.row-id-number": "RUT",
+      "borrower.scan.pension-contributions.value-id-number": "18.452.309-4",
       "borrower.scan.pension-contributions.row-periods": "Periods",
       "borrower.scan.pension-contributions.value-periods": "Aug 2025 / Jul 2026",
       "borrower.scan.pension-contributions.row-months": "Months contributed",
@@ -1015,9 +1019,9 @@
       "borrower.scan.tax-folder.title": "Tax folder for credit applications",
       "borrower.scan.tax-folder.row-taxpayer": "Taxpayer",
       "borrower.scan.tax-folder.value-taxpayer": "JAVIERA SOTO MIRANDA",
-      "borrower.scan.tax-folder.row-id-number": "ID Number",
-      "borrower.scan.tax-folder.value-id-number": "1-0234-0567",
-      "borrower.scan.tax-folder.value-id-number-unreadable": "1-0234-05_7",
+      "borrower.scan.tax-folder.row-id-number": "RUT",
+      "borrower.scan.tax-folder.value-id-number": "18.452.309-4",
+      "borrower.scan.tax-folder.value-id-number-unreadable": "18.452.30_-4",
       "borrower.scan.tax-folder.row-periods": "Periods",
       "borrower.scan.tax-folder.value-periods": "12",
       "borrower.scan.tax-folder.row-issue-date": "Issue date",
@@ -1030,18 +1034,18 @@
       "borrower.scan.down-payment-proof.row-holder": "Account holder",
       "borrower.scan.down-payment-proof.value-holder": "JAVIERA SOTO MIRANDA",
       "borrower.scan.down-payment-proof.row-balance": "Available balance",
-      "borrower.scan.down-payment-proof.value-balance": "$14,000",
+      "borrower.scan.down-payment-proof.value-balance": "$15,100,000",
       "borrower.scan.down-payment-proof.row-seasoning": "Funds seasoning",
       "borrower.scan.down-payment-proof.value-seasoning": "6 months",
 
       "borrower.scan.purchase-promise.org": "Santiago Notary · Register 4,219",
       "borrower.scan.purchase-promise.title": "Purchase promise agreement",
       "borrower.scan.purchase-promise.row-seller": "Seller",
-      "borrower.scan.purchase-promise.value-seller": "INMOBILIARIA ACONCAGUA S.A.",
+      "borrower.scan.purchase-promise.value-seller": "INMOBILIARIA ACONCAGUA SpA",
       "borrower.scan.purchase-promise.row-buyer": "Buyer",
       "borrower.scan.purchase-promise.value-buyer": "JAVIERA SOTO MIRANDA",
       "borrower.scan.purchase-promise.row-price": "Price",
-      "borrower.scan.purchase-promise.value-price": "$130,000",
+      "borrower.scan.purchase-promise.value-price": "UF 3,500",
       "borrower.scan.purchase-promise.row-signature-date": "Signature date",
       "borrower.scan.purchase-promise.value-signature-date": "12-03-2026",
 
@@ -1049,8 +1053,8 @@
       "borrower.scan.first-home-affidavit.title": "First home and absence of subsidy",
       "borrower.scan.first-home-affidavit.row-declarant": "Declarant",
       "borrower.scan.first-home-affidavit.value-declarant": "JAVIERA SOTO MIRANDA",
-      "borrower.scan.first-home-affidavit.row-id-number": "ID Number",
-      "borrower.scan.first-home-affidavit.value-id-number": "1-0234-0567",
+      "borrower.scan.first-home-affidavit.row-id-number": "RUT",
+      "borrower.scan.first-home-affidavit.value-id-number": "18.452.309-4",
       "borrower.scan.first-home-affidavit.row-subject": "Subject",
       "borrower.scan.first-home-affidavit.value-subject": "First home · no previous subsidy",
       "borrower.scan.first-home-affidavit.row-signature": "Signature",
@@ -1059,7 +1063,7 @@
       "borrower.scan.title-certificate.org": "Santiago Real Estate Registrar",
       "borrower.scan.title-certificate.title": "Current title certificate",
       "borrower.scan.title-certificate.row-owner": "Owner",
-      "borrower.scan.title-certificate.value-owner": "INMOBILIARIA ACONCAGUA S.A.",
+      "borrower.scan.title-certificate.value-owner": "INMOBILIARIA ACONCAGUA SpA",
       "borrower.scan.title-certificate.row-tax-roll": "Tax roll",
       "borrower.scan.title-certificate.value-tax-roll": "1234-56",
       "borrower.scan.title-certificate.row-registration": "Registration",
@@ -1079,7 +1083,7 @@
         "Upload the correct document to move this item forward.",
       "borrower.banner.incomplete.title": "1 field still needs confirming",
       "borrower.banner.incomplete.body":
-        "Page 1 arrived cropped and the taxpayer ID number could not be read (1-0234-05_7). The other three fields on the folder matched.",
+        "Page 1 arrived cropped and the taxpayer RUT could not be read (18.452.30_-4). The other three fields on the folder matched.",
       "borrower.banner.review.title": "Being reviewed by a specialist",
       "borrower.banner.review.body":
         "A mortgage specialist is checking the encumbrance on the title. Nothing is needed from you.",
@@ -1109,7 +1113,7 @@
       "borrower.assistant.reply-specialist":
         "A mortgage specialist has this one and is checking it with the registrar's document. Nothing is needed from you — I'll write here as soon as there's an answer. 🔍",
       "borrower.assistant.reply-rejected":
-        "Page 1 in full is all we need, with the ID number legible on the right margin. Send it whenever suits you and I'll check it straight away. 📄",
+        "Page 1 in full is all we need, with the RUT legible on the right margin. Send it whenever suits you and I'll check it straight away. 📄",
       "borrower.assistant.reply-accepted":
         "That one is already accepted, so there's nothing more to do on it. I've passed your note to the team and they'll come back to you here. 👍",
       "borrower.assistant.reply-ack":
@@ -1130,7 +1134,7 @@
       "borrower.msg.doc1-request":
         "*1 of 9 — National ID card (both sides)*\nWe use it to verify your identity with the civil registry before the assessment.",
       "borrower.msg.doc1-verified":
-        "✅ *ID verified.* ID number 1-0234-0567 matches the application and the document is valid until 2029.",
+        "✅ *ID verified.* RUT 18.452.309-4 matches the application and the document is valid until 2029.",
       "borrower.msg.doc2-request":
         "*2 of 9 — Your last 3 payslips*\nWe use them to compute your average net income and the payment-to-income ratio.",
       "borrower.msg.here-you-go": "Here you go 👇",
@@ -1147,7 +1151,7 @@
       "borrower.msg.doc5-request":
         "*5 of 9 — Tax folder for credit purposes*\nDownload it at sii.cl. Note: it must be the “for credit purposes” version, not the personal one.",
       "borrower.msg.doc5-incomplete":
-        "⚠️ *Right document, but one field is missing.*\nOn page 1 your ID number is cut off: it reads *1-0234-05_7* and I can’t confirm the missing digit.\n\nCould you resend just page 1 in full? The rest is perfect: 12 periods, issued 02-08-2026, for credit purposes. ✔️",
+        "⚠️ *Right document, but one field is missing.*\nOn page 1 your RUT is cut off: it reads *18.452.30_-4* and I can’t confirm the missing digit.\n\nCould you resend just page 1 in full? The rest is perfect: 12 periods, issued 02-08-2026, for credit purposes. ✔️",
       "borrower.msg.will-resend-later":
         "OK, I’ll download it from the tax site again and send it later.",
       "borrower.msg.doc5-left-open":
@@ -1155,7 +1159,7 @@
       "borrower.msg.doc6-request":
         "*6 of 9 — Proof of down payment*\nYour savings account statement confirms the {downPayment} down payment.",
       "borrower.msg.doc6-verified":
-        "✅ *Funds confirmed:* $14,000 available, above the {downPayment} required.",
+        "✅ *Funds confirmed:* $15,100,000 available, above the {downPayment} required.",
       "borrower.msg.doc7-request": "*7 of 9 — Purchase promise agreement*\nConfirms the price and the date agreed with the developer.",
       "borrower.msg.doc7-verified": "✅ *Promise signed on 12-03-2026* — confirmed.\nPrice {property}, new home (first sale), Inmobiliaria Aconcagua.",
       "borrower.msg.doc8-request":
@@ -1168,10 +1172,10 @@
       "borrower.msg.doc9-no-hold":
         "It doesn’t stop your assessment: your file has already moved to credit review. We’ll come back to you with the answer, and there’s nothing for you to do on this item.",
       "borrower.msg.open-items":
-        "You have *2 open items* in the portal:\n\n• *Tax folder* — page 1 with the full ID number is missing. You can upload it yourself from the portal.\n• *Title certificate* — a specialist is reviewing it, nothing for you to do.\n\nIn the portal you can open each document and see exactly what we flagged. 👀",
+        "You have *2 open items* in the portal:\n\n• *Tax folder* — page 1 with the full RUT is missing. You can upload it yourself from the portal.\n• *Title certificate* — a specialist is reviewing it, nothing for you to do.\n\nIn the portal you can open each document and see exactly what we flagged. 👀",
 
       /* Scripted narrative — the activity feed */
-      "borrower.feed.doc1-accepted": "ID card verified · ID number matches",
+      "borrower.feed.doc1-accepted": "ID card verified · RUT matches",
       "borrower.feed.doc2-rejected":
         "Document rejected: pension certificate sent instead of payslips",
       "borrower.feed.doc2-accepted":
@@ -1180,8 +1184,8 @@
       "borrower.feed.doc4-reassigned":
         "Pension contributions received and reassigned automatically (12 continuous months)",
       "borrower.feed.doc5-incomplete":
-        "Tax folder incomplete: ID number unreadable on page 1",
-      "borrower.feed.doc6-accepted": "Down payment confirmed · $14,000 available",
+        "Tax folder incomplete: RUT unreadable on page 1",
+      "borrower.feed.doc6-accepted": "Down payment confirmed · $15,100,000 available",
       "borrower.feed.doc7-accepted": "Promise verified · signed 12-03-2026",
       "borrower.feed.doc8-accepted": "First-home requirements confirmed",
       "borrower.feed.doc9-escalated":
@@ -1217,8 +1221,8 @@
      * certificado de dominio vigente, Fojas, alzamiento, pie, dividendo,
      * rol de avaluo, cotizaciones.
      *
-     * Numbers keep Costa Rican convention through NUMBER_LOCALE es-CR, so one call
-     * prints "$3.150" here and "$3,150" in English.
+     * Numbers keep Chilean convention through NUMBER_LOCALE es-CL, so one call
+     * prints "UF 3.150" here and "UF 3,150" in English.
      */
     es: {
       /* ============================================================ common */
@@ -1321,7 +1325,7 @@
       "audit.agent-affordability-recalculated": "El agente recalculó la capacidad de pago",
       "audit.agent-handoff-prepared": "El agente preparó la derivación",
 
-      "audit.detail.intake-reviewed": "Lista de verificación construida a partir de las reglas del producto: nueve documentos, declaración de primera vivienda. Sin expediente previo para esta cédula.",
+      "audit.detail.intake-reviewed": "Lista de verificación construida a partir de las reglas del producto: nueve documentos, declaración de primera vivienda. Sin expediente previo para este RUT.",
       "audit.detail.checklist-message":
         "“Hola Javiera: esto es todo lo que necesitamos para el crédito. Sube cada documento cuando lo tengas y los voy revisando a medida que lleguen.”",
       "audit.detail.down-payment-checked":
@@ -1330,8 +1334,8 @@
         "Recordatorio 1 de 3. Carpeta tributaria y certificado de dominio aún pendientes al cierre del día.",
       "audit.detail.followup-two":
         "Recordatorio 2 de 3. Ambos documentos llegaron en las dos horas siguientes.",
-      "audit.detail.tax-folder-checked": "La cédula de la página 1 llegó ilegible. 1 de 4 campos no se pudo leer, así que el documento se devolvió.",
-      "audit.detail.tax-folder-message": "“La cédula de la página 1 de tu carpeta tributaria llegó ilegible, ¿puedes enviar esa página de nuevo?”",
+      "audit.detail.tax-folder-checked": "El RUT de la página 1 llegó ilegible. 1 de 4 campos no se pudo leer, así que el documento se devolvió.",
+      "audit.detail.tax-folder-message": "“El RUT de la página 1 de tu carpeta tributaria llegó ilegible, ¿puedes enviar esa página de nuevo?”",
       "audit.detail.registry-checked":
         "Certificado obtenido del Conservador de Bienes Raíces. Fojas 1.842 N° 1.190 (2024): una hipoteca a favor de otro banco, no declarada en la solicitud.",
       "audit.detail.policy-checked":
@@ -1367,12 +1371,12 @@
       "lender.language.es-title": "Ver este portal en español",
       "lender.status.language": "Idioma cambiado a español.",
       "lender.money.aria-label": "Mostrar los montos en",
-      "lender.money.usd": "$",
-      "lender.money.crc": "₡",
-      "lender.money.usd-title": "Mostrar los montos en dólares estadounidenses",
-      "lender.money.crc-title": "Mostrar los montos en colones costarricenses (aproximado)",
-      "lender.status.money-usd": "Los montos ahora se muestran en dólares.",
-      "lender.status.money-crc": "Los montos ahora se muestran en colones.",
+      "lender.money.uf": "UF",
+      "lender.money.uf-title": "Mostrar los montos en UF (unidad de fomento)",
+      "lender.money.clp": "CLP",
+      "lender.money.clp-title": "Mostrar los montos en pesos chilenos",
+      "lender.status.money-uf": "Los montos ahora se muestran en UF.",
+      "lender.status.money-clp": "Los montos ahora se muestran en pesos chilenos.",
       "lender.money.aria-label": "Mostrar montos en",
 
       "lender.switch-to-borrower": "Ver como solicitante",
@@ -1451,7 +1455,7 @@
       "lender.notifications.detail.title-certificate":
         "El certificado registra una hipoteca a favor de otro banco en Fojas 1.842 N° 1.190 (2024). La solicitud declaró sin gravámenes. Todo lo demás del certificado — propietario, rol de avalúo, vigencia — coincidió.",
       "lender.notifications.detail.tax-folder":
-        "La página 1 llegó cortada y no se pudo leer la cédula del contribuyente (1-0234-05_7). Los otros tres campos de la carpeta coincidieron.",
+        "La página 1 llegó cortada y no se pudo leer el RUT del contribuyente (18.452.30_-4). Los otros tres campos de la carpeta coincidieron.",
       "lender.notifications.detail.purchase-promise":
         "La promesa de compraventa se firmó tres semanas después del informe de tasación. Debería haberlo seguido de inmediato. El resto del documento — partes, precio, propiedad — coincidió con el expediente.",
 
@@ -1528,9 +1532,9 @@
       "lender.application.loan-heading": "La solicitud de crédito",
       "lender.application.borrower-heading": "La solicitante",
       "lender.application.address": "Dirección",
-      "lender.application.province": "Provincia",
-      "lender.application.canton": "Cantón",
-      "lender.application.district": "Distrito",
+      "lender.application.region": "Región",
+      "lender.application.comuna": "Comuna",
+      "lender.application.ciudad": "Ciudad",
       "lender.application.address-verified": "Dirección verificada",
       "lender.application.address-verified-yes": "Verificada",
       "lender.application.address-verified-no": "No verificada",
@@ -1545,7 +1549,7 @@
       "lender.application.rate": "Tasa",
       "lender.application.financing": "Financiamiento",
       "lender.application.name": "Nombre completo",
-      "lender.application.id-number": "Cédula",
+      "lender.application.id-number": "RUT",
       "lender.application.date-of-birth": "Fecha de nacimiento",
       "lender.application.income": "Renta líquida mensual verificada",
       "lender.application.phone": "Teléfono (WhatsApp)",
@@ -1612,8 +1616,8 @@
         "Hipoteca a favor de otro banco — Fojas 1.842 N° 1.190 (2024)",
       "lender.documents.encumbrance-note":
         "Confirmar si esta hipoteca corresponde al crédito constructor de la inmobiliaria y si se alza en la misma escritura.",
-      "lender.documents.owner-stated": "Inmobiliaria Aconcagua S.A.",
-      "lender.documents.owner-found": "INMOBILIARIA ACONCAGUA S.A.",
+      "lender.documents.owner-stated": "Inmobiliaria Aconcagua SpA",
+      "lender.documents.owner-found": "INMOBILIARIA ACONCAGUA SpA",
       "lender.documents.tax-roll-value": "1234-56",
       "lender.documents.validity-stated": "Emitido dentro de los últimos 30 días",
       "lender.documents.validity-found": "Emitido hace 3 días",
@@ -1625,7 +1629,7 @@
       "lender.check.status.note": "Nota",
 
       "lender.check.national-id.full-name": "Nombre completo",
-      "lender.check.national-id.id-number": "Cédula",
+      "lender.check.national-id.id-number": "RUT",
       "lender.check.national-id.date-of-birth": "Fecha de nacimiento",
       "lender.check.national-id.validity": "Vigencia del documento",
       "lender.check.payslips.stated-income": "Renta líquida declarada",
@@ -1638,7 +1642,7 @@
       "lender.check.pension-contributions.months": "Meses cotizados",
       "lender.check.pension-contributions.continuity": "Continuidad",
       "lender.check.pension-contributions.file-source": "Origen del archivo",
-      "lender.check.tax-folder.taxpayer-id-number": "Cédula del contribuyente",
+      "lender.check.tax-folder.taxpayer-id-number": "RUT del contribuyente",
       "lender.check.tax-folder.purpose": "Finalidad de la carpeta",
       "lender.check.tax-folder.periods": "Períodos incluidos",
       "lender.check.tax-folder.issue-date": "Fecha de emisión",
@@ -1724,9 +1728,9 @@
       "lender.assistant.answer-title-settled":
         "El certificado de dominio está resuelto — {verdict}. El gravamen en Fojas 1.842 N° 1.190 (2024) queda cubierto por la condición de alzamiento y no por un segundo documento.",
       "lender.assistant.answer-tax-open":
-        "La página 1 de la Carpeta Tributaria llegó cortada y no se pudo leer la cédula del contribuyente (1-0234-05_7). Los otros tres campos coincidieron, así que la carpeta es el documento correcto — falta la página 1 completa.",
+        "La página 1 de la Carpeta Tributaria llegó cortada y no se pudo leer el RUT del contribuyente (18.452.30_-4). Los otros tres campos coincidieron, así que la carpeta es el documento correcto — falta la página 1 completa.",
       "lender.assistant.answer-tax-settled":
-        "La Carpeta Tributaria está resuelta — {verdict}. La cédula de la página 1 se lee correctamente.",
+        "La Carpeta Tributaria está resuelta — {verdict}. El RUT de la página 1 se lee correctamente.",
       "lender.assistant.answer-approval-items":
         "La aprobación está frenada por {count} ítem(s) de revisión abiertos: {items}. Las condiciones se revisan una vez que esos cierren.",
       "lender.assistant.answer-approval-conditions":
@@ -1797,7 +1801,7 @@
       "lender.condition.heading": "Condiciones",
       "lender.condition.c1":
         "Alzamiento simultáneo de la hipoteca en Fojas 1.842 N° 1.190 (2024) en la misma escritura.",
-      "lender.condition.c2": "Carpeta Tributaria completa, con la cédula legible en la página 1.",
+      "lender.condition.c2": "Carpeta Tributaria completa, con el RUT legible en la página 1.",
       "lender.condition.cleared": "Cumplida",
       "lender.condition.open": "Abierta",
       "lender.condition.cleared-on": "Cumplida el {date}",
@@ -1855,7 +1859,7 @@
 
       "lender.officer.name": "Carolina Reyes",
       "lender.officer.role": "Ejecutiva hipotecaria, mesa Santiago",
-      "lender.officer.authority": "$150.000",
+      "lender.officer.authority": "UF 4.000",
       "lender.team.name": "Equipo hipotecario BancoWeston",
 
       "lender.status.board-ready": "Tablero de cartera listo. {count} casos.",
@@ -1903,7 +1907,7 @@
       "risk.policy.payment-to-income":
         "Relación dividendo/renta igual o menor al 30% de la renta líquida verificada.",
       "risk.policy.financing": "Financiamiento de hasta el 90% del valor de la propiedad.",
-      "risk.policy.property-cap": "Viviendas nuevas de hasta $150.000.",
+      "risk.policy.property-cap": "Viviendas nuevas de hasta UF 4.000.",
       "risk.policy.employment":
         "Contrato indefinido, al menos 12 meses de antigüedad y sin lagunas en las cotizaciones.",
       "risk.policy.appraisal":
@@ -1944,12 +1948,12 @@
       "borrower.control.language-en": "English",
       "borrower.control.language-es": "Español",
       "borrower.control.money": "Montos",
-      "borrower.control.money-usd": "$",
-      "borrower.control.money-crc": "₡",
-      "borrower.control.money-usd-title": "Mostrar los montos en dólares estadounidenses",
-      "borrower.control.money-crc-title": "Mostrar los montos en colones costarricenses (aproximado)",
-      "borrower.status.money-usd": "Los montos ahora se muestran en dólares.",
-      "borrower.status.money-crc": "Los montos ahora se muestran en colones.",
+      "borrower.control.money-uf": "UF",
+      "borrower.control.money-clp": "CLP",
+      "borrower.control.money-uf-title": "Mostrar los montos en UF (unidad de fomento)",
+      "borrower.control.money-clp-title": "Mostrar los montos en pesos chilenos",
+      "borrower.status.money-uf": "Los montos ahora se muestran en UF.",
+      "borrower.status.money-clp": "Los montos ahora se muestran en pesos chilenos.",
       "borrower.status.language": "Idioma cambiado a español.",
       "borrower.control.playing": "Reproduciendo la demo",
       "borrower.control.paused": "Demo en pausa",
@@ -1972,7 +1976,7 @@
       "borrower.sim.property-value": "Valor de la propiedad",
       "borrower.sim.down-payment": "Pie",
       "borrower.sim.full-name": "Nombre completo",
-      "borrower.sim.id-number": "Cédula",
+      "borrower.sim.id-number": "RUT",
       "borrower.sim.date-of-birth": "Fecha de nacimiento",
       "borrower.sim.income": "Renta líquida mensual",
       "borrower.sim.phone": "Teléfono (WhatsApp)",
@@ -2005,16 +2009,16 @@
 
       "borrower.sim.section-address": "Dirección de la propiedad",
       "borrower.sim.street-address": "Dirección exacta",
-      "borrower.sim.provincia": "Provincia",
-      "borrower.sim.provincia-placeholder": "Selecciona una provincia",
-      "borrower.sim.canton": "Cantón",
-      "borrower.sim.distrito": "Distrito",
+      "borrower.sim.region": "Región",
+      "borrower.sim.region-placeholder": "Selecciona una región",
+      "borrower.sim.comuna": "Comuna",
+      "borrower.sim.ciudad": "Ciudad",
       "borrower.sim.verify-address": "Verificar dirección",
       "borrower.sim.verify-address-checking": "Verificando…",
       "borrower.sim.address-verified": "Dirección verificada",
-      "borrower.sim.demo-street-address": "Residencial Aconcagua, Casa 12, San Pedro",
-      "borrower.sim.demo-canton": "Montes de Oca",
-      "borrower.sim.demo-distrito": "San Pedro",
+      "borrower.sim.demo-street-address": "Camino Rinconada 2450, Casa 12",
+      "borrower.sim.demo-comuna": "Maipú",
+      "borrower.sim.demo-ciudad": "Santiago",
 
       "borrower.intro-call.schedule": "Agenda tu llamada",
       "borrower.intro-call.title": "Agenda una llamada con un ejecutivo",
@@ -2042,7 +2046,7 @@
 
       "borrower.portal.title": "Portal de la solicitante",
       "borrower.portal.application": "Solicitud {case}",
-      "borrower.portal.property": "Casa nueva · Proyecto Aconcagua, San Pedro",
+      "borrower.portal.property": "Casa nueva · Proyecto Aconcagua, Maipú",
       "borrower.portal.status-documents": "Esperando documentos",
       "borrower.portal.status-review": "En evaluación crediticia",
       "borrower.portal.status-human": "1 ítem en revisión de especialista",
@@ -2069,8 +2073,8 @@
 
       "borrower.scan.national-id.org": "Servicio de Registro Civil e Identificación",
       "borrower.scan.national-id.title": "Cédula de Identidad",
-      "borrower.scan.national-id.row-id-number": "Cédula",
-      "borrower.scan.national-id.value-id-number": "1-0234-0567",
+      "borrower.scan.national-id.row-id-number": "RUT",
+      "borrower.scan.national-id.value-id-number": "18.452.309-4",
       "borrower.scan.national-id.row-given-names": "Nombres",
       "borrower.scan.national-id.value-given-names": "JAVIERA ANDREA",
       "borrower.scan.national-id.row-surnames": "Apellidos",
@@ -2080,20 +2084,20 @@
       "borrower.scan.national-id.row-expiry": "Vencimiento",
       "borrower.scan.national-id.value-expiry": "14/11/2029",
 
-      "borrower.scan.payslips.org": "CONSTRUCTORA ANDES S.A.",
+      "borrower.scan.payslips.org": "CONSTRUCTORA ANDES SpA",
       "borrower.scan.payslips.title": "Liquidación de remuneraciones — julio 2026",
       "borrower.scan.payslips.row-employee": "Trabajadora",
       "borrower.scan.payslips.value-employee": "JAVIERA SOTO MIRANDA",
-      "borrower.scan.payslips.row-id-number": "Cédula",
-      "borrower.scan.payslips.value-id-number": "1-0234-0567",
+      "borrower.scan.payslips.row-id-number": "RUT",
+      "borrower.scan.payslips.value-id-number": "18.452.309-4",
       "borrower.scan.payslips.row-base-salary": "Sueldo base",
-      "borrower.scan.payslips.value-base-salary": "$4.200",
+      "borrower.scan.payslips.value-base-salary": "$2.850.000",
       "borrower.scan.payslips.row-deductions": "Total descuentos",
-      "borrower.scan.payslips.value-deductions": "$650",
+      "borrower.scan.payslips.value-deductions": "$450.000",
       "borrower.scan.payslips.row-net-pay": "Líquido a pagar",
-      "borrower.scan.payslips.value-net-pay": "$3.550",
+      "borrower.scan.payslips.value-net-pay": "$2.400.000",
 
-      "borrower.scan.employment-tenure.org": "CONSTRUCTORA ANDES S.A.",
+      "borrower.scan.employment-tenure.org": "CONSTRUCTORA ANDES SpA",
       "borrower.scan.employment-tenure.title": "Certificado de antigüedad laboral",
       "borrower.scan.employment-tenure.row-employee": "Trabajadora",
       "borrower.scan.employment-tenure.value-employee": "JAVIERA SOTO MIRANDA",
@@ -2108,8 +2112,8 @@
       "borrower.scan.pension-contributions.title": "Certificado de cotizaciones",
       "borrower.scan.pension-contributions.row-member": "Afiliada",
       "borrower.scan.pension-contributions.value-member": "JAVIERA SOTO MIRANDA",
-      "borrower.scan.pension-contributions.row-id-number": "Cédula",
-      "borrower.scan.pension-contributions.value-id-number": "1-0234-0567",
+      "borrower.scan.pension-contributions.row-id-number": "RUT",
+      "borrower.scan.pension-contributions.value-id-number": "18.452.309-4",
       "borrower.scan.pension-contributions.row-periods": "Períodos",
       "borrower.scan.pension-contributions.value-periods": "ago 2025 / jul 2026",
       "borrower.scan.pension-contributions.row-months": "Meses cotizados",
@@ -2119,9 +2123,9 @@
       "borrower.scan.tax-folder.title": "Carpeta Tributaria para solicitar créditos",
       "borrower.scan.tax-folder.row-taxpayer": "Contribuyente",
       "borrower.scan.tax-folder.value-taxpayer": "JAVIERA SOTO MIRANDA",
-      "borrower.scan.tax-folder.row-id-number": "Cédula",
-      "borrower.scan.tax-folder.value-id-number": "1-0234-0567",
-      "borrower.scan.tax-folder.value-id-number-unreadable": "1-0234-05_7",
+      "borrower.scan.tax-folder.row-id-number": "RUT",
+      "borrower.scan.tax-folder.value-id-number": "18.452.309-4",
+      "borrower.scan.tax-folder.value-id-number-unreadable": "18.452.30_-4",
       "borrower.scan.tax-folder.row-periods": "Períodos",
       "borrower.scan.tax-folder.value-periods": "12",
       "borrower.scan.tax-folder.row-issue-date": "Fecha de emisión",
@@ -2134,18 +2138,18 @@
       "borrower.scan.down-payment-proof.row-holder": "Titular",
       "borrower.scan.down-payment-proof.value-holder": "JAVIERA SOTO MIRANDA",
       "borrower.scan.down-payment-proof.row-balance": "Saldo disponible",
-      "borrower.scan.down-payment-proof.value-balance": "$14.000",
+      "borrower.scan.down-payment-proof.value-balance": "$15.100.000",
       "borrower.scan.down-payment-proof.row-seasoning": "Antigüedad de los fondos",
       "borrower.scan.down-payment-proof.value-seasoning": "6 meses",
 
       "borrower.scan.purchase-promise.org": "Notaría Santiago · Repertorio 4.219",
       "borrower.scan.purchase-promise.title": "Promesa de compraventa",
       "borrower.scan.purchase-promise.row-seller": "Vendedora",
-      "borrower.scan.purchase-promise.value-seller": "INMOBILIARIA ACONCAGUA S.A.",
+      "borrower.scan.purchase-promise.value-seller": "INMOBILIARIA ACONCAGUA SpA",
       "borrower.scan.purchase-promise.row-buyer": "Compradora",
       "borrower.scan.purchase-promise.value-buyer": "JAVIERA SOTO MIRANDA",
       "borrower.scan.purchase-promise.row-price": "Precio",
-      "borrower.scan.purchase-promise.value-price": "$130.000",
+      "borrower.scan.purchase-promise.value-price": "UF 3.500",
       "borrower.scan.purchase-promise.row-signature-date": "Fecha de firma",
       "borrower.scan.purchase-promise.value-signature-date": "12/03/2026",
 
@@ -2153,8 +2157,8 @@
       "borrower.scan.first-home-affidavit.title": "Primera vivienda y ausencia de subsidio",
       "borrower.scan.first-home-affidavit.row-declarant": "Declarante",
       "borrower.scan.first-home-affidavit.value-declarant": "JAVIERA SOTO MIRANDA",
-      "borrower.scan.first-home-affidavit.row-id-number": "Cédula",
-      "borrower.scan.first-home-affidavit.value-id-number": "1-0234-0567",
+      "borrower.scan.first-home-affidavit.row-id-number": "RUT",
+      "borrower.scan.first-home-affidavit.value-id-number": "18.452.309-4",
       "borrower.scan.first-home-affidavit.row-subject": "Materia",
       "borrower.scan.first-home-affidavit.value-subject": "Primera vivienda · sin subsidio previo",
       "borrower.scan.first-home-affidavit.row-signature": "Firma",
@@ -2163,7 +2167,7 @@
       "borrower.scan.title-certificate.org": "Conservador de Bienes Raíces de Santiago",
       "borrower.scan.title-certificate.title": "Certificado de dominio vigente",
       "borrower.scan.title-certificate.row-owner": "Propietario",
-      "borrower.scan.title-certificate.value-owner": "INMOBILIARIA ACONCAGUA S.A.",
+      "borrower.scan.title-certificate.value-owner": "INMOBILIARIA ACONCAGUA SpA",
       "borrower.scan.title-certificate.row-tax-roll": "Rol de avalúo",
       "borrower.scan.title-certificate.value-tax-roll": "1234-56",
       "borrower.scan.title-certificate.row-registration": "Inscripción",
@@ -2184,7 +2188,7 @@
       "borrower.banner.rejected.body": "Sube el documento correcto para avanzar con este ítem.",
       "borrower.banner.incomplete.title": "Falta 1 dato por confirmar",
       "borrower.banner.incomplete.body":
-        "La página 1 llegó cortada y no se pudo leer la cédula del contribuyente (1-0234-05_7). Los otros tres campos de la carpeta coincidieron.",
+        "La página 1 llegó cortada y no se pudo leer el RUT del contribuyente (18.452.30_-4). Los otros tres campos de la carpeta coincidieron.",
       "borrower.banner.review.title": "En revisión por un especialista",
       "borrower.banner.review.body":
         "Un especialista hipotecario está revisando el gravamen del certificado de dominio. No necesitamos nada de ti.",
@@ -2229,7 +2233,7 @@
       "borrower.msg.doc1-request":
         "*1 de 9 — Cédula de Identidad (ambos lados)*\nLa usamos para verificar tu identidad con el Registro Civil antes de la evaluación.",
       "borrower.msg.doc1-verified":
-        "✅ *Cédula verificada.* La cédula 1-0234-0567 coincide con la solicitud y el documento está vigente hasta 2029.",
+        "✅ *Cédula verificada.* El RUT 18.452.309-4 coincide con la solicitud y el documento está vigente hasta 2029.",
       "borrower.msg.doc2-request":
         "*2 de 9 — Tus 3 últimas liquidaciones de sueldo*\nLas usamos para calcular tu renta líquida promedio y la relación dividendo/renta.",
       "borrower.msg.here-you-go": "Aquí van 👇",
@@ -2246,7 +2250,7 @@
       "borrower.msg.doc5-request":
         "*5 de 9 — Carpeta Tributaria para fines crediticios*\nLa descargas en sii.cl. Importante: tiene que ser la versión “para solicitar créditos”, no la personal.",
       "borrower.msg.doc5-incomplete":
-        "⚠️ *El documento es el correcto, pero falta un dato.*\nEn la página 1 tu cédula aparece cortada: se lee *1-0234-05_7* y no puedo confirmar el dígito que falta.\n\n¿Me reenvías solo la página 1 completa? El resto está conforme: 12 períodos, emitida el 02/08/2026, para fines crediticios. ✔️",
+        "⚠️ *El documento es el correcto, pero falta un dato.*\nEn la página 1 tu RUT aparece cortado: se lee *18.452.30_-4* y no puedo confirmar el dígito que falta.\n\n¿Me reenvías solo la página 1 completa? El resto está conforme: 12 períodos, emitida el 02/08/2026, para fines crediticios. ✔️",
       "borrower.msg.will-resend-later":
         "De acuerdo, la vuelvo a descargar del SII y te la mando más tarde.",
       "borrower.msg.doc5-left-open":
@@ -2254,7 +2258,7 @@
       "borrower.msg.doc6-request":
         "*6 de 9 — Acreditación del pie*\nLa cartola de tu cuenta de ahorro confirma el pie de {downPayment}.",
       "borrower.msg.doc6-verified":
-        "✅ *Fondos confirmados:* $14.000 disponibles, por sobre los {downPayment} requeridos.",
+        "✅ *Fondos confirmados:* $15.100.000 disponibles, por sobre los {downPayment} requeridos.",
       "borrower.msg.doc7-request": "*7 de 9 — Promesa de compraventa*\nConfirma el precio y la fecha acordados con la inmobiliaria.",
       "borrower.msg.doc7-verified": "✅ *Promesa firmada el 12/03/2026* — confirmada.\nPrecio {property}, vivienda nueva (primera venta), Inmobiliaria Aconcagua.",
       "borrower.msg.doc8-request":
@@ -2267,9 +2271,9 @@
       "borrower.msg.doc9-no-hold":
         "No detiene tu evaluación: tu expediente ya pasó a evaluación crediticia. Volvemos con la respuesta y no hay nada que tengas que hacer en este ítem.",
       "borrower.msg.open-items":
-        "Tienes *2 ítems abiertos* en el portal:\n\n• *Carpeta Tributaria* — falta la página 1 con la cédula completa. La puedes subir tú desde el portal.\n• *Certificado de dominio* — lo está revisando un especialista, no tienes que hacer nada.\n\nEn el portal puedes abrir cada documento y ver exactamente qué observamos. 👀",
+        "Tienes *2 ítems abiertos* en el portal:\n\n• *Carpeta Tributaria* — falta la página 1 con el RUT completo. La puedes subir tú desde el portal.\n• *Certificado de dominio* — lo está revisando un especialista, no tienes que hacer nada.\n\nEn el portal puedes abrir cada documento y ver exactamente qué observamos. 👀",
 
-      "borrower.feed.doc1-accepted": "Cédula verificada · la cédula coincide",
+      "borrower.feed.doc1-accepted": "Cédula verificada · el RUT coincide",
       "borrower.feed.doc2-rejected":
         "Documento rechazado: llegó el certificado AFP en vez de las liquidaciones",
       "borrower.feed.doc2-accepted":
@@ -2277,8 +2281,8 @@
       "borrower.feed.doc3-accepted": "Antigüedad laboral confirmada · 4 años 2 meses",
       "borrower.feed.doc4-reassigned":
         "Cotizaciones AFP recibidas y reasignadas automáticamente (12 meses continuos)",
-      "borrower.feed.doc5-incomplete": "Carpeta Tributaria incompleta: cédula ilegible en la página 1",
-      "borrower.feed.doc6-accepted": "Pie confirmado · $14.000 disponibles",
+      "borrower.feed.doc5-incomplete": "Carpeta Tributaria incompleta: RUT ilegible en la página 1",
+      "borrower.feed.doc6-accepted": "Pie confirmado · $15.100.000 disponibles",
       "borrower.feed.doc7-accepted": "Promesa verificada · firmada el 12/03/2026",
       "borrower.feed.doc8-accepted": "Requisitos de primera vivienda confirmados",
       "borrower.feed.doc9-escalated":
@@ -2308,7 +2312,7 @@
   var DEFAULT_LOCALE = "en";
   /* Every locale lives here: English, and the Spanish added alongside it. */
   var LOCALES = ["en", "es"];
-  var NUMBER_LOCALE = { en: "en-US", es: "es-CR" };
+  var NUMBER_LOCALE = { en: "en-US", es: "es-CL" };
 
   var PLACEHOLDER = /\{([a-zA-Z0-9_]+)\}/g;
 
@@ -2320,8 +2324,8 @@
    *
    * One switch for the whole demo. It lives here rather than on either page
    * because both pages and falabella-credit.js have to agree: a Spanish page
-   * printing "$3,150" with an English thousands separator is worse than an
-   * English page. numberLocale() reads it, so every formatUSD /
+   * printing "UF 3,150" with an English thousands separator is worse than an
+   * English page. numberLocale() reads it, so every formatUF / formatCLP /
    * formatDate call already in the pages follows the switch with no change at
    * the call site.
    */
